@@ -1,5 +1,10 @@
 function [] = Process_batch_data(i,alpha_v, lambda_1, r)
 
+i = str2num(i)
+alpha_v = str2num(alpha_v)
+lambda_1 = str2num(lambda_1)
+r = str2num(r)
+
 input_filename = strcat('input_data_',num2str(i),'.mat');
 
 sprintf('i = %d', i)
