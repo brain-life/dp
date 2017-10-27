@@ -9,8 +9,12 @@ sprintf('r = %f', r)
 sprintf('input %s', input_filename)
 
 %% Set the proper path for the ENCODE
-ENCODE_path = '/N/dc2/projects/lifebid/code/ccaiafa/Development/Dictionary_learning/Unique_kernel/encode/';
-addpath(genpath(ENCODE_path));
+switch getenv('ENV')
+case 'IUHPC'
+	disp('loading encode')
+	addpath(genpath('/N/dc2/projects/lifebid/code/ccaiafa/Development/Dictionary_learning/Unique_kernel/encode/'));
+	addpath(genpath('/N/dc2/projects/lifebid/code/vistasoft/'))
+end
 
 load(deblank(ls(input_filename)));
 
