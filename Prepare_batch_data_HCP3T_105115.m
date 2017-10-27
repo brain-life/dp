@@ -2,7 +2,7 @@ function [] = Prepare_batch_data_HCP3T_105115(nBatch)
 
 
 %% Set the Path for the output
-dataOutputPath = '/N/dc2/projects/lifebid/code/ccaiafa/Development/Dictionary_learning/Diffusion_predictor/Unique_kernel/Experiments/Grid_Search_in_the_cloud/results/HCP3T_105115/';
+dataOutputPath = '/N/dc2/projects/lifebid/code/ccaiafa/Development/Dictionary_learning/Diffusion_predictor/Unique_kernel/Experiments/Grid_Search_in_the_cloud/Diffusion_predictor_brain-life/';
 
 %% Set the proper path for VISTASOFT 
 vista_soft_path = '/N/dc2/projects/lifebid/code/vistasoft/';
@@ -67,6 +67,40 @@ for n=1:nBatch
     save(fullfile(dataOutputPath,strcat('input_data_',num2str(n),'.mat')), ...
         'Y', 'Phi','ind_train','ind_val','bvecs','bvals','-v7.3')
 end
+
+% Prepare submission file, one per batch
+
+process =1;
+for n=1:nBatch
+    name = strcat('osg_',subject,'_batch_',num2str(n));
+    FileName    = fullfile(dataOutputPath, strcat(name,'.submit'));
+    fid = fopen(FileName, 'wt' );
+    fprintf(fid, 'Universe = vanilla \n\n');
+    fprintf(fid, '+ProjectName="Diffusion-predictor" \n\n');
+    fprintf(fid, 'Executable = run_osg.sh \n');
+    fprintf(fid, strcat('transfer_input_files = bin/Process_batch_data,input_data_',num2str(n),'.mat \n'));
+    fprintf(fid, 'should_transfer_files = YES \n\n');
+    
+    fprintf(fid, strcat('Output = log/',num2str(n),'.$(Process).out \n'));
+    fprintf(fid, strcat('Error = log/',num2str(n),'.$(Process).err \n'));    
+    fprintf(fid, strcat('Log = log/',num2str(n),'.$(Process).log \n\n'));  
+    
+    fprintf(fid, 'requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True \n\n');    
+    
+    for alpha_v = 0:0.1:8
+        for lambda_1 = 0.2:0.05:2
+            for r = 0:0.05:0.7
+                fprintf(fid, 'Arguments = %s %s %s %s \n',num2str(n),num2str(alpha_v),num2str(lambda_1),num2str(r));
+                fprintf(fid, 'queue \n\n');
+                process = process + 1;
+            end
+        end
+    end
+    
+    fclose(fid);
+    
+end
+disp(['Total number of processes = ',num2str(process)])
 
 rmpath(genpath(vista_soft_path));
 rmpath(genpath(ENCODE_path));
