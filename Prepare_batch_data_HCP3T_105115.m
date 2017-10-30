@@ -85,6 +85,10 @@ for n=1:nBatch
     fprintf(fid, strcat('Error = log/',num2str(n),'.$(Process).err \n'));    
     fprintf(fid, strcat('Log = log/',num2str(n),'.$(Process).log \n\n'));  
     
+    %this might not be a good idea if we start submitting a whole bunch of jobs
+    fprintf(fid, 'stream_output = True\n\n');
+
+    fprintf(fid, 'request_memory = 5G\n');
     fprintf(fid, 'requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True \n\n');    
     
     for alpha_v = 0:0.1:8

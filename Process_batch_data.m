@@ -21,6 +21,7 @@ case 'IUHPC'
 	addpath(genpath('/N/dc2/projects/lifebid/code/vistasoft/'))
 end
 
+%# function sptensor
 load(input_filename);
 
 %load(deblank(ls(input_filename)));
