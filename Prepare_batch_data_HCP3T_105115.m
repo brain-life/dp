@@ -2,7 +2,7 @@ function [] = Prepare_batch_data_HCP3T_105115(nBatch)
 
 
 %% Set the Path for the output
-dataOutputPath = '/N/dc2/projects/lifebid/code/ccaiafa/Development/Dictionary_learning/Diffusion_predictor/Unique_kernel/Experiments/Grid_Search_in_the_cloud/Diffusion_predictor_brain-life/';
+dataOutputPath = 'input';
 
 %% Set the proper path for VISTASOFT 
 vista_soft_path = '/N/dc2/projects/lifebid/code/vistasoft/';

@@ -11,7 +11,7 @@ sprintf('i = %d', i)
 sprintf('alpha_v = %f', alpha_v)
 sprintf('lambda_1 = %f', lambda_1)
 sprintf('r = %f', r)
-sprintf('input %s', input_filename)
+sprintf('input = %s', input_filename)
 
 %% Set the proper path for the ENCODE
 switch getenv('ENV')
@@ -21,7 +21,9 @@ case 'IUHPC'
 	addpath(genpath('/N/dc2/projects/lifebid/code/vistasoft/'))
 end
 
-load(deblank(ls(input_filename)));
+load(input_filename);
+
+%load(deblank(ls(input_filename)));
 
 [nTrain,nVoxels] = size(Y);
 [nAtoms] = size(Phi,1);
