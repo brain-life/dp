@@ -79,6 +79,7 @@ for n=1:nBatch
     fprintf(fid, '+ProjectName="Diffusion-predictor" \n\n');
     fprintf(fid, 'Executable = run_osg.sh \n');
     fprintf(fid, strcat('transfer_input_files = bin/Process_batch_data,input_data_',num2str(n),'.mat \n'));
+    fprintf(fid, 'max_retries = 5\n');
     fprintf(fid, 'should_transfer_files = YES \n\n');
     
     fprintf(fid, strcat('Output = log/',num2str(n),'.$(Process).out \n'));
