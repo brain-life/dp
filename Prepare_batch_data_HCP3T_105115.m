@@ -74,10 +74,12 @@ process =1;
 for n=1:nBatch
     name = strcat('osg_',subject,'_batch_',num2str(n));
     FileName    = fullfile(dataOutputPath, strcat(name,'.submit'));
+
+    disp(['SAVING htcondor submit',num2str(n)]);
     fid = fopen(FileName, 'wt' );
     fprintf(fid, 'Universe = vanilla \n\n');
     fprintf(fid, '+ProjectName="Diffusion-predictor" \n\n');
-    fprintf(fid, 'Executable = run_osg.sh \n');
+    fprintf(fid, 'Executable = run.sh \n');
     fprintf(fid, strcat('transfer_input_files = bin/Process_batch_data,input_data_',num2str(n),'.mat \n'));
     fprintf(fid, 'max_retries = 5\n');
     fprintf(fid, 'should_transfer_files = YES \n\n');
