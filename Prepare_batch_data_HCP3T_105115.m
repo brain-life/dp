@@ -1,9 +1,5 @@
 function [] = Prepare_batch_data_HCP3T_105115(nBatch)
 
-
-%% Set the Path for the output
-dataOutputPath = 'input';
-
 %% Set the proper path for VISTASOFT 
 vista_soft_path = '/N/dc2/projects/lifebid/code/vistasoft/';
 addpath(genpath(vista_soft_path));
@@ -55,7 +51,6 @@ ind_val = ind_dirs(nTrain+1:end); % Set of validation directions
 Batch_size = round(nVoxels/nBatch);
 
 for n=1:nBatch
-    
     n0 = (nBatch - 1)*Batch_size + 1;
     nf = min(nBatch*Batch_size + 1, nVoxels);
     
@@ -64,49 +59,28 @@ for n=1:nBatch
     Phi = fe.life.M.Phi(:,n0:nf,:);
     
     disp(['SAVING BATCH DATA',num2str(n)]);
-    save(fullfile(dataOutputPath,strcat('input_data_',num2str(n),'.mat')), ...
+    save(strcat('input/input_data_',num2str(n),'.mat'), ...
         'Y', 'Phi','ind_train','ind_val','bvecs','bvals','-v7.3')
 end
 
-% Prepare submission file, one per batch
-
-process =1;
-for n=1:nBatch
-    name = strcat('osg_',subject,'_batch_',num2str(n));
-    FileName    = fullfile(dataOutputPath, strcat(name,'.submit'));
-
-    disp(['SAVING htcondor submit',num2str(n)]);
-    fid = fopen(FileName, 'wt' );
-    fprintf(fid, 'Universe = vanilla \n\n');
-    fprintf(fid, '+ProjectName="Diffusion-predictor" \n\n');
-    fprintf(fid, 'Executable = run.sh \n');
-    fprintf(fid, strcat('transfer_input_files = bin/Process_batch_data,input_data_',num2str(n),'.mat \n'));
-    %fprintf(fid, 'max_retries = 5\n');
-    fprintf(fid, 'should_transfer_files = YES \n\n');
-    
-    fprintf(fid, strcat('Output = log/',num2str(n),'.$(Process).out \n'));
-    fprintf(fid, strcat('Error = log/',num2str(n),'.$(Process).err \n'));    
-    fprintf(fid, strcat('Log = log/',num2str(n),'.$(Process).log \n\n'));  
-    
-    %this might not be a good idea if we start submitting a whole bunch of jobs
-    %fprintf(fid, 'stream_output = True\n\n');
-
-    fprintf(fid, 'request_memory = 5G\n');
-    fprintf(fid, 'requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True \n\n');    
-    
+% Prepare condor_dag file
+fid = fopen('submit.dag', 'wt');
+process=1;
+for batch=1:nBatch
+    disp(['outputting dag at', num2str(batch)]);
     for alpha_v = 0:0.1:8
         for lambda_1 = 0.2:0.05:2
             for r = 0:0.05:0.7
-                fprintf(fid, 'Arguments = %s %s %s %s \n',num2str(n),num2str(alpha_v),num2str(lambda_1),num2str(r));
-                fprintf(fid, 'queue \n\n');
+                fprintf(fid, 'JOB job.%d job.submit\n', process);
+	    	fprintf(fid, 'VARS job.%d batch="%d" process="%d" p1="%f" p2="%f" p3="%f"\n', process, batch, process, alpha_v, lambda_1, r);
+                fprintf(fid, 'RETRY job.%d 10\n\n', process);
                 process = process + 1;
             end
         end
     end
-    
-    fclose(fid);
-    
 end
+fclose(fid);
+      
 disp(['Total number of processes = ',num2str(process)])
 
 rmpath(genpath(vista_soft_path));
