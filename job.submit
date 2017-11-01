@@ -10,7 +10,7 @@ Output = log/$(batch).$(num).out
 Error = log/$(batch).$(num).err 
 Log = log/$(batch).$(num).log 
 
-stream_output = True
+#stream_output = True
 
 request_memory = 5G
 requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
