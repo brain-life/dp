@@ -81,7 +81,7 @@ for n=1:nBatch
     fprintf(fid, '+ProjectName="Diffusion-predictor" \n\n');
     fprintf(fid, 'Executable = run.sh \n');
     fprintf(fid, strcat('transfer_input_files = bin/Process_batch_data,input_data_',num2str(n),'.mat \n'));
-    fprintf(fid, 'max_retries = 5\n');
+    %fprintf(fid, 'max_retries = 5\n');
     fprintf(fid, 'should_transfer_files = YES \n\n');
     
     fprintf(fid, strcat('Output = log/',num2str(n),'.$(Process).out \n'));
@@ -89,7 +89,7 @@ for n=1:nBatch
     fprintf(fid, strcat('Log = log/',num2str(n),'.$(Process).log \n\n'));  
     
     %this might not be a good idea if we start submitting a whole bunch of jobs
-    fprintf(fid, 'stream_output = True\n\n');
+    %fprintf(fid, 'stream_output = True\n\n');
 
     fprintf(fid, 'request_memory = 5G\n');
     fprintf(fid, 'requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True \n\n');    
