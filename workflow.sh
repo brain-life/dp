@@ -5,10 +5,10 @@ module load matlab/2017a
 #echo "compile the Process_batch_data"
 #matlab -nosplash -nodisplay -r "compile; quit"
 
-echo "splitting data"
-rm -rf input
-mkdir -p input
-matlab -nodisplay -nosplash -r "Prepare_batch_data_HCP3T_105115(10); quit"
+#echo "splitting data"
+#rm -rf input
+#mkdir -p input
+#matlab -nodisplay -nosplash -r "Prepare_batch_data_HCP3T_105115(10); quit"
 
 echo "transfer input files to csiu"
 ssh csiu.grid.iu.edu -C "mkdir -p /local-scratch/$USER/diffusion_predictor/log"
