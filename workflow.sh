@@ -2,8 +2,8 @@
 
 module load matlab/2017a
 
-echo "compile the Process_batch_data"
-matlab -nosplash -nodisplay -r "compile; quit"
+#echo "compile the Process_batch_data"
+#matlab -nosplash -nodisplay -r "compile; quit"
 
 #echo "splitting data"
 #rm -rf input
