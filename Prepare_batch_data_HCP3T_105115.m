@@ -72,7 +72,7 @@ for batch=1:nBatch
         for lambda_1 = 0.2:0.05:2
             for r = 0:0.05:0.7
                 fprintf(fid, 'JOB job.%d job.submit\n', process);
-	    	fprintf(fid, 'VARS job.%d batch="%d" process="%d" p1="%f" p2="%f" p3="%f"\n', process, batch, process, alpha_v, lambda_1, r);
+	    	fprintf(fid, 'VARS job.%d batch="%d" num="%d" p1="%f" p2="%f" p3="%f"\n', process, batch, process, alpha_v, lambda_1, r);
                 fprintf(fid, 'RETRY job.%d 10\n\n', process);
                 process = process + 1;
             end

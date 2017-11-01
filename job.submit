@@ -1,0 +1,20 @@
+Universe = vanilla
+
++ProjectName="Diffusion-predictor"
+Executable = run.sh
+transfer_input_files = bin/Process_batch_data,input_data_$(batch).mat
+
+should_transfer_files = YES
+
+Output = log/$(batch).$(num).out 
+Error = log/$(batch).$(num).err 
+Log = log/$(batch).$(num).log 
+
+stream_output = True
+
+request_memory = 5G
+requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
+
+arguments = $(batch) $(p1) $(p2) $(p3)
+
+queue 
