@@ -13,7 +13,8 @@ Log = log/$(batch).$(num).log
 #stream_output = True
 
 request_memory = 5G
-requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
+#requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
+requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True && GLIDEIN_ResourceName != "Hyak_CE"
 
 arguments = $(batch) $(p1) $(p2) $(p3)
 
