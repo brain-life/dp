@@ -1,6 +1,8 @@
 Universe = vanilla
 
+# comment the following line if submitted trhough OSG
 +ProjectName="Diffusion-predictor"
+
 Executable = run.sh
 transfer_input_files = bin/Process_batch_data,input_data_$(batch).mat
 
@@ -14,7 +16,8 @@ Log = log/$(batch).$(num).log
 
 request_memory = 5G
 #requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
-requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True && GLIDEIN_ResourceName != "Hyak_CE"
+#requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True && GLIDEIN_ResourceName != "Hyak_CE"
+requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True && GLIDEIN_Site != "Hyak_CE"
 
 arguments = $(batch) $(p1) $(p2) $(p3)
 
