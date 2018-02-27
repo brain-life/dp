@@ -1,0 +1,6 @@
+*.mat
+*.nii.gz
+*.tck
+*.pbs
+*.err
+*.out
