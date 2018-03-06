@@ -81,7 +81,9 @@ while (n<= Niter)&&(delta > threshold)
     
     %% Min over B (consider s0 fixed)
     %% THIS IS THE FUNCTION WE NEED TO PARALLELIZE
+    tic
     B = Min_over_B(Y - ones(nTrain,1)*s0', B, D, alpha_v); % eq. (10) in Methods_and_Supp.pdf
+    disp(['Min_over_B time= ',num2str(toc),'sec'])
     
     %% Min over s0 (consider B fixed)
     s0 = Min_over_s0(Y - D*B); % eqs. (8) and (9) in Methods_and_Supp.pdf
@@ -191,7 +193,33 @@ end
 % This function provides an estimation of matrix B given the rest of variables in the system.
 % Matrix B is solved column by column, where each column correspond to a particular voxel. 
 % For each voxel we need to solve a NNLS optimization problem using an extended matrix and vector in order to incorporate the l2 regurarizer controlled by the parameter alpha_v
+
 function [B] = Min_over_B(Y,B,D,lambda)
+nVoxels = size(Y,2); % Number of voxels
+Bnew = zeros(size(B));
+parfor v=1:nVoxels % we use parfor because each voxel is independent of the rest of voxels
+    [ind, val] = find(B(:,v)); % each instance of par for works on a column in matrix B
+    
+    C = [D(:,ind); lambda*eye(length(ind))]; % augmented matrix for Tikhonov regularizer
+    d = [Y(:,v); zeros(length(ind),1)]; % augmented vector
+    
+    % Set parameters for the BBNLS algorithm
+    opt = solopt;
+    out = bbnnls_orig(C, d, zeros(size(C,2),1), opt);
+    b = out.x;
+    
+    col = zeros(size(B,1),1);
+    col(ind,1) = b
+    
+    Bnew(:,v) = col;
+    
+end
+% Finally, we return a sparse matrix
+B = sparse(Bnew);
+end
+
+%% Old version below
+function [B] = Min_over_B_OLD(Y,B,D,lambda)
 nVoxels = size(Y,2); % Number of voxels
 parfor v=1:nVoxels % we use parfor because each voxel is independent of the rest of voxels
     [ind, val] = find(B(:,v)); % each instance of par for works on a column in matrix B
@@ -206,12 +234,28 @@ parfor v=1:nVoxels % we use parfor because each voxel is independent of the rest
     
     Bvals{v}.ind = ind;
     Bvals{v}.val = b;
+    %Bvals{v}.vox = ones(size(ind))*v;
     
 end
 % Finally, we reconstract the sparse matrix B from theirs columns
+%tic
 for v=1:nVoxels
     B(Bvals{v}.ind,v) = Bvals{v}.val;
 end
+%disp(['Time building B = ', num2str(toc), ' sec'])
+
+% tic
+% idx = Bvals{1}.ind;
+% idv = Bvals{1}.vox;
+% vals = Bvals{1}.val;
+% for v=2:nVoxels
+%     idx = cat(1,idx,Bvals{v}.ind);
+%     idv = cat(1,idv,Bvals{v}.vox);
+%     vals =  cat(1,vals,Bvals{v}.val);
+% end
+% [m,n] = size(B);
+% B = sparse(idx,idv,vals,m,n);
+% disp(['Time building B = ', num2str(toc), ' sec'])
 
 end
 

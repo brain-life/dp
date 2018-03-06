@@ -9,7 +9,7 @@ info.name_base = strcat(info.dataset,'_',info.id,'_',info.tractography_type); % 
 %% Model general parameters
 info.parameters.L = 45;     % Number of discretization steps in spherical coordinates
 info.parameters.p = 0.5;    % percentage of training gradient directions (50% training and 50% testing)
-info.parameters.n = 1.0;    % 0.01;   % percentage of voxels used for crossvalidation. Ideally, we will want to fit using the 100% of tract voxels
+info.parameters.n = 0.01;    % 0.01;   % percentage of voxels used for crossvalidation. Ideally, we will want to fit using the 100% of tract voxels
                             % but we could reduce that percentange after we look at the results of experiments currently going on to see to 
                             % what extent we will be able to reduce the number of voxels safely.
                             % For testing the code it is suggested to use, for example, only 1% of voxels (0.01)
