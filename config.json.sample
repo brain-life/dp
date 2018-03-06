@@ -1,0 +1,11 @@
+{
+	"dwi": "/mnt/scratch/hayashis/testdata/108323/dwi/dwi.nii.gz",
+	"track": "/mnt/scratch/hayashis/testdata/108323/track/track.tck",
+	"afq": "/mnt/scratch/hayashis/testdata/108323/afq/output.mat",
+	"L": 45,
+	"p": 0.5,
+	"n": 1.0,
+
+	"optimal_params": "./"
+}
+
