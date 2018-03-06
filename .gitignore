@@ -4,3 +4,5 @@
 *.pbs
 *.err
 *.out
+results_*
+config.json
