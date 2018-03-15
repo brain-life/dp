@@ -1,11 +1,9 @@
 {
-	"dwi": "/mnt/scratch/hayashis/testdata/108323/dwi/dwi.nii.gz",
-	"track": "/mnt/scratch/hayashis/testdata/108323/track/track.tck",
-	"afq": "/mnt/scratch/hayashis/testdata/108323/afq/output.mat",
+	"dwi": "/mnt/scratch/hayashis/testdata/ccaiafa/diffusion_data/dwi_data_b2000_aligned_trilin.nii.gz",
+	"track": "/mnt/scratch/hayashis/testdata/ccaiafa/tractography/dwi_data_b2000_aligned_trilin_csd_lmax10_wm_SD_PROB-NUM01-500000.tck",
+	"afq": "/mnt/scratch/hayashis/testdata/ccaiafa/classification/fe_structure_105115_STC_run01_500000_SD_PROB_lmax10_connNUM01_TRACTS-nocull.mat",
 	"L": 45,
 	"p": 0.5,
-	"n": 1.0,
-
-	"optimal_params": "./"
+	"n": 1.0
 }
 

@@ -78,7 +78,7 @@ disp(['Time Fitting Full Model=',num2str(TimeFullFit),'mins'])
 %% Saving output results
 disp('SAVING RESULTS...')
 save(fullfile(info.output.results_root,strcat(feFileName,'_alpha_v_',num2str(alpha_v),'_alpha_f_',num2str(0),...
-    '_lambda_1_',num2str(lambda_1),'_lambda_2_',num2str(lambda_2),'.mat')), 'fe','-v7.3')
+'_lambda_1_',num2str(lambda_1),'_lambda_2_',num2str(lambda_2),'.mat')), 'fe','-v7.3')
 
 info.parameters.opt.alpha_v = alpha_v;
 info.parameters.opt.alpha_f = 0;
