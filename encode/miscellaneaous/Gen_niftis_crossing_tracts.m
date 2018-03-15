@@ -84,7 +84,8 @@ subject = info.name_base;
 %% load fe structure
 FileName = deblank(ls(fullfile(dataInputPath,strcat('fe_*.mat'))));
 load(FileName);
-dwiFile = fe.path.dwifile;
+%dwiFile = fe.path.dwifile;
+dwiFile = info.input.dwi_path;
 
 %% Save .b file (mrtrix format)
 %bvecsFile = strcat(dwiFile(1:end-6),'bvecs');

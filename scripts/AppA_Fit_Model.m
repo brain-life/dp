@@ -69,7 +69,8 @@ disp(' ')
 
 % Fit Full Model using optimal parameters and 100% of gradient directions
 tic
-[fe, results] = FitFullModelSampleAllTracts(dwiFile, fgFileName, feFileName, L, 1, n, alpha_v, alpha_f, lambda_1, lambda_2, info.input.classification_path);         
+[fe, results] = FitFullModel(dwiFile, fgFileName, feFileName, L, n, alpha_v, alpha_f, lambda_1, lambda_2);         
+
 TimeFullFit = toc/60;
 
 disp(['Time Fitting Full Model=',num2str(TimeFullFit),'mins'])
