@@ -6,6 +6,8 @@ if ~isdeployed
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
 
+pool = parpool(22) %24 didn't work
+
 % load my own config.json
 config = loadjson('config.json')
 
@@ -17,6 +19,9 @@ alpha_f = 0;
 tic
 disp(['FitFullModel.. (alpha_v, lambda_, lambda_2)=(',num2str(alpha_v),',',num2str(lambda_1),',',num2str(lambda_2),')'])
 [fe, results] = FitFullModel(...
+	config.dwi, ...
+	config.track, ...
+	'bogus', ...
     config.L, ...
     config.n, ...
     alpha_v, ...
@@ -36,6 +41,9 @@ save('info.mat', 'info');
 
 %rmpath(info.repo.encode_local);
 %rmpath(info.repo.vistasoft);
+
+delete(pool);
+
 end
 
 %% Function that read all 
