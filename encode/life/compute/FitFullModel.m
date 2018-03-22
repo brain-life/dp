@@ -37,11 +37,14 @@ Y = fe.life.diffusion_signal_img(1:nVoxels,ind_train)';
 D = fe.life.M.Dict(ind_train,:);
 Phi = fe.life.M.Phi(:,1:nVoxels,:);
 
-% Fit B and s0 to measurements (alternate between B and s0)
+
+%% STAGE 1: Voxelwise fitting. Fit B and s0 to measurements (alternate between B and s0, see algorithm in Methods_and_Supp.pdf)
+% We stop iterating when the maximum number of iterations (Niter) is
+% reached or when the error is below a threshold.
 Niter = 50;
 threshold = 1e-8;
 
-Erro_vs_iter = zeros(1,Niter);
+Error_vs_iter = zeros(1,Niter);
 
 B = ttv(Phi,ones(nFibers,1),3);
 [ind, val] = find(B);
@@ -187,26 +190,27 @@ end
 
  
 function [B] = Min_over_B(Y,B,D,lambda)
-nVoxels = size(Y,2);
-parfor v=1:nVoxels
-    [ind, val] = find(B(:,v));
+nVoxels = size(Y,2); % Number of voxels
+Bnew = zeros(size(B));
+parfor v=1:nVoxels % we use parfor because each voxel is independent of the rest of voxels
+    [ind, val] = find(B(:,v)); % each instance of par for works on a column in matrix B
     
     C = [D(:,ind); lambda*eye(length(ind))]; % augmented matrix for Tikhonov regularizer
-    d = [Y(:,v); zeros(length(ind),1)];
-    %b = lsqnonneg(C,d);
+    d = [Y(:,v); zeros(length(ind),1)]; % augmented vector
+    
+    % Set parameters for the BBNLS algorithm
     opt = solopt;
     out = bbnnls_orig(C, d, zeros(size(C,2),1), opt);
     b = out.x;
-    %b(b==0) = eps;
-    %B(ind,v) = b;
-    Bvals{v}.ind = ind;
-    Bvals{v}.val = b;
-    %disp(['voxel ',num2str(v)]);
+    
+    col = zeros(size(B,1),1);
+    col(ind,1) = b
+    
+    Bnew(:,v) = col;
+    
 end
-for v=1:nVoxels
-    B(Bvals{v}.ind,v) = Bvals{v}.val;
-end
-
+% Finally, we return a sparse matrix
+B = sparse(Bnew);
 end
 
 
