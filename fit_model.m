@@ -14,10 +14,10 @@ end
 
 taskid = getenv('SLURM_ARRAY_TASK_ID')
 
-pool = parpool(22) %24 didn't work
-rng(sum(100*clock)); % seed used for random selection of voxels (same seed for same experiment)
-
 config = loadjson('config.json')
+
+pool = parpool(config.workers) %24 didn't work
+rng(sum(100*clock)); % seed used for random selection of voxels (same seed for same experiment)
 
 %calculate parameters to use from taskid
 %paramsets={};

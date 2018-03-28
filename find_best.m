@@ -6,10 +6,10 @@ if ~isdeployed
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
 
-pool = parpool(22) %24 didn't work
-
 % load my own config.json
 config = loadjson('config.json')
+
+pool = parpool(config.workers) %24 didn't work
 
 %load optimal values of parameters
 alpha_f = 0;
