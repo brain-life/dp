@@ -4,8 +4,8 @@
   "description": "Diffusion Predictor",
   "abcd": {
     "start": "./start.sh",
-    "stop": "./stop.sh",
-    "status": "./status.sh"
+    "status": "./status.sh",
+    "stop": "./stop.sh"
   },
   "author": "Soichi Hayashi <hayashis@iu.edu>",
   "license": "ISC",

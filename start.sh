@@ -11,7 +11,14 @@ for alpha_v in `seq 0 0.4 7.2`; do
     done
 done
 
-#sbatch fit_model.sh
+echo "submitting fit_model array"
+fit=$(sbatch --parsable --array=1-3 fit_model.sh)
+echo $fit > jobid.fit
+
+echo "submitting fint_best"
+best=$(sbatch --parsable --dependency=afterok:$fit find_best.sh)
+echo $best > jobid.best
+
 #else
 #	echo "no sbatch.. guessing it's running on a test machine"
 #	#simulate sbatch with one task ID

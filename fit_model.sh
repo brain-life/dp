@@ -1,8 +1,10 @@
 #!/bin/bash
 #PBS -N diff_pred-fit_model
-#PBS -l nodes=1,walltime=03:00:00
-#PBS -t [0-9]
+#PBS -l nodes=1,vmem=32g,walltime=03:00:00
+##PBS -t [1-2]
 #PBS -V
+
+echo "Running SLURM_ARRAY_TASK_ID:$SLURM_ARRAY_TASK_ID"
 
 #pull nth param sets using $SLURM_ARRAY_TASK_ID
 params=$(head -${SLURM_ARRAY_TASK_ID} params.list | tail -1)
@@ -12,5 +14,7 @@ lambda_1=$(echo $params | cut -f3 -d" ")
 lambda_2=$(echo $params | cut -f4 -d" ")
 
 echo "SLURM_ARRAY_TASK_ID=$SLURM_ARRAY_TASK_ID running fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2)"
-matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
-#./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
+#matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
+
+echo "running singularity"
+time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2

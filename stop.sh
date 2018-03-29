@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "TODO"
-exit 1
+scancel `cat jobid.fit`
+scancel `cat jobid.best`
