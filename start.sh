@@ -11,12 +11,13 @@ for alpha_v in `seq 0 0.4 7.2`; do
     done
 done
 
-echo "submitting fit_model array"
-fit=$(sbatch --parsable --array=1-3 fit_model.sh)
+params=$(cat params.list | wc -l)
+echo "submitting fit_model array(1-$params)"
+fit=$(sbatch --parsable --array=1-$params -o "slurm-%j.log" -e "slurm-%j.err" fit_model.sh)
 echo $fit > jobid.fit
 
 echo "submitting fint_best"
-best=$(sbatch --parsable --dependency=afterok:$fit find_best.sh)
+best=$(sbatch --parsable --dependency=afterok:$fit -o "slurm-%j.log" -e "slurm-%j.err" find_best.sh)
 echo $best > jobid.best
 
 #else

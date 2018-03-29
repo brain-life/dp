@@ -34,5 +34,6 @@ echo "jobs:$all_count running:$running_count pending:$pending_count failed:$fail
 
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. to strict?)
+	./stop.sh
 	exit 2
 fi
