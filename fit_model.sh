@@ -1,7 +1,7 @@
 #!/bin/bash
-#PBS -N diff_pred-fit_model
-#PBS -l nodes=1,ppn=8,vmem=16g,walltime=04:30:00
-#PBS -V
+##PBS -N diff_pred-fit_model
+##PBS -l nodes=1,ppn=8,vmem=16g,walltime=04:30:00
+##PBS -V
 
 echo "Running SLURM_ARRAY_TASK_ID:$SLURM_ARRAY_TASK_ID"
 
