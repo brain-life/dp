@@ -25,11 +25,13 @@ fi
 true > jobstate
 scontrol show job $jobid_fit | grep JobState >> jobstate
 scontrol show job $jobid_best | grep JobState >> jobstate
+params=$(wc -l params.list)
 running_count=$(grep RUNNING jobstate | wc -l)
 pending_count=$(grep PENDING jobstate | wc -l)
 failed_count=$(grep FAILED jobstate | wc -l)
-completed_count=$(grep FAILED jobstate | wc -l)
-echo "running:$running_count pending:$pending_count failed:$failed_count completed:$completed_count"
+#completed_count=$(grep FAILED jobstate | wc -l)
+completed_count=$(ls results*.mat | wc -l)
+echo "params: $params running:$running_count pending:$pending_count failed:$failed_count completed:$completed_count"
 
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. to strict?)
