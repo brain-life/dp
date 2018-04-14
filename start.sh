@@ -13,11 +13,11 @@ done
 
 params=$(cat params.list | wc -l)
 echo "submitting fit_model array(1-$params)"
-fit=$(sbatch --parsable -n 8 --array=1-$params -o "slurm-%j.log" -e "slurm-%j.err" fit_model.sh)
+fit=$(sbatch --parsable -c 8  --array=1-$params -o "slurm-%j.log" -e "slurm-%j.err" fit_model.sh)
 echo $fit > jobid.fit
 
 echo "submitting fint_best"
-best=$(sbatch --parsable -n 16 --dependency=afterok:$fit -o "slurm-%j.log" -e "slurm-%j.err" find_best.sh)
+best=$(sbatch --parsable -c 16 --dependency=afterok:$fit -o "slurm-%j.log" -e "slurm-%j.err" find_best.sh)
 echo $best > jobid.best
 
 #else
