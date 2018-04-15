@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#clean up previous logs
+mkdir -p oldlogs
+mv slurm-* oldlogs
+
 echo "generating parameter list"
 true > params.list
 for alpha_v in `seq -f '%g' 0 0.4 7.2`; do
