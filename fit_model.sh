@@ -12,6 +12,10 @@ alpha_f=$(echo $params | cut -f2 -d" ")
 lambda_1=$(echo $params | cut -f3 -d" ")
 lambda_2=$(echo $params | cut -f4 -d" ")
 
+#might prevent parpool initialization error
+#https://github.com/UCL-RITS/rcps-buildscripts/issues/55#issuecomment-256309931
+export MATLAB_PREFDIR=/tmp/$SLURM_ARRAY_TASK_ID
+
 echo "SLURM_ARRAY_TASK_ID=$SLURM_ARRAY_TASK_ID running fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2)"
 #matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
 

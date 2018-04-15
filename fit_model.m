@@ -13,26 +13,11 @@ else
 end
 
 taskid = getenv('SLURM_ARRAY_TASK_ID')
-
 config = loadjson('config.json')
 
 pool = parpool(config.workers) %24 didn't work
-rng(sum(100*clock)); % seed used for random selection of voxels (same seed for same experiment)
+%rng(sum(100*clock)); % seed used for random selection of voxels (same seed for same experiment)
 
-%calculate parameters to use from taskid
-%paramsets={};
-%for alpha_v = [0:0.4:7.5]
-%    for lambda_1 = [1.0:0.25:2.5]
-%        for lambda_2 = [0:0.05:0.2]
-%	    params.alpha_v = alpha_v;
-%	    params.lambda_1 = lambda_1;
-%	    params.lambda_2 = lambda_2;
-%	    paramsets = [paramsets, params];
-%	end
-%    end
-%end
-%disp(['number of parameter sets', num2str(size(paramsets))])
-%params=paramsets{str2num(taskid)}
 disp([ 'alpha_v=', num2str(alpha_v), ...
        ' alpha_f=', num2str(alpha_f), ...
        ' lambda_1=', num2str(lambda_1), ...
@@ -51,6 +36,8 @@ disp([ 'alpha_v=', num2str(alpha_v), ...
 	lambda_1, ...
 	lambda_2, ...
 	config.afq);
+
+%save results
 fileName = fullfile(strcat('results_alpha_v_',num2str(alpha_v),'_alpha_f_',num2str(0), '_lambda_1_',num2str(lambda_1),'_lambda_2_',num2str(lambda_2),'.mat'));
 save(fileName, 'results')
 
