@@ -25,4 +25,4 @@ if [ -f "results_alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lamb
 fi
 
 echo "generating results_alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
-time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
+time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
