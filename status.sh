@@ -32,7 +32,7 @@ running_count=$(grep RUNNING jobstate | wc -l)
 completed_count=$(ls results*.mat | wc -l)
 echo "$params running:$running_count completed:$completed_count"
 
-#failed_count=$(grep FAILED jobstate | wc -l)
+failed_count=$(grep FAILED jobstate | wc -l)
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. too strict?)
 	./stop.sh
