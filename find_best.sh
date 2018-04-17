@@ -1,7 +1,6 @@
 #!/bin/bash
 #PBS -N diff_pred-find_best
-#PBS -l nodes=1,walltime=03:00:00
+#PBS -l nodes=1,ppn=4,walltime=03:00:00
 #PBS -V
 
-matlab -nodisplay -r find_best
-#./compiled/find_best
+time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/find_best
