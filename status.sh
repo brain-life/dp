@@ -29,7 +29,7 @@ params=$(wc -l params.list)
 running_count=$(grep RUNNING jobstate | wc -l)
 #pending_count=$(grep PENDING jobstate | wc -l)
 #completed_count=$(grep FAILED jobstate | wc -l)
-completed_count=$(ls results*.mat | wc -l)
+completed_count=$(ls results*.mat 2>/dev/null | wc -l || true)
 echo "$params running:$running_count completed:$completed_count"
 
 failed_count=$(grep FAILED jobstate | wc -l)
