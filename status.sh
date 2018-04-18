@@ -7,7 +7,7 @@
 
 if [ ! -f jobid.best ];then
 	echo "no jobid.best - not yet submitted?"
-	exit 1
+	exit 3
 fi
 
 jobid_fit=`cat jobid.fit`
@@ -22,20 +22,34 @@ if [ -z $jobid_best ]; then
 	exit 3
 fi
 
-true > jobstate
-scontrol show job $jobid_fit | grep JobState >> jobstate
-scontrol show job $jobid_best | grep JobState >> jobstate
-params=$(wc -l params.list)
+#collect info
+fit_status=$(scontrol show job $jobid_fit | grep JobState)
+find_best_status=$(scontrol show job $jobid_best | grep JobState)
 running_count=$(grep RUNNING jobstate | wc -l)
 #pending_count=$(grep PENDING jobstate | wc -l)
 #completed_count=$(grep FAILED jobstate | wc -l)
 completed_count=$(ls results*.mat 2>/dev/null | wc -l || true)
-echo "$params running:$running_count completed:$completed_count"
-
 failed_count=$(grep FAILED jobstate | wc -l)
+params=$(wc -l params.list)
+true > jobstate
+echo $fit_status >> jobstate
+echo $find_best_status >> jobstate
+
+#did it fail?
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. too strict?)
 	./stop.sh
 	exit 2
 fi
+ 
+#did it finish?
+scontrol show job $jobid_best | grep "COMPLETED"
+if [ $? -eq 0 ]; then
+    echo "finished!"
+    exit 1
+fi
+
+#it must be running still then.. just output counts
+echo "$params running:$running_count completed:$completed_count"
+
 
