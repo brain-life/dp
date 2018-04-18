@@ -39,6 +39,7 @@ echo $find_best_status >> jobstate
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. too strict?)
 	./stop.sh
+    echo "one of the jobs failed"
 	exit 2
 fi
  
