@@ -4,6 +4,9 @@
 #mkdir -p oldlogs
 #mv slurm-* oldlogs
 
+rm jobid.fit
+rm jobid.best
+
 echo "generating parameter list"
 true > params.list
 for alpha_v in `seq -f '%g' 0 0.4 7.2`; do
