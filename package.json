@@ -1,0 +1,16 @@
+{
+  "name": "app-diffpred",
+  "version": "1.0.0",
+  "description": "Diffusion Predictor",
+  "abcd": {
+    "start": "./start.sh",
+    "status": "./status.sh",
+    "stop": "./stop.sh"
+  },
+  "author": "Soichi Hayashi <hayashis@iu.edu>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brain-life/app-diffpred/issues"
+  },
+  "homepage": "https://github.com/bralin-life/app-diffpred"
+}

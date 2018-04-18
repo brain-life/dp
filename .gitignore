@@ -2,3 +2,14 @@
 *.m~
 input
 submit.dag
+*.nii.gz
+*.tck
+*.pbs
+*.err
+*.out
+results_*
+config.json
+log.*
+params.list
+test.sh
+barn
