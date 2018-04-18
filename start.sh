@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #clean up previous logs
-mkdir -p oldlogs
-mv slurm-* oldlogs
+#mkdir -p oldlogs
+#mv slurm-* oldlogs
 
 echo "generating parameter list"
 true > params.list
@@ -15,13 +15,15 @@ for alpha_v in `seq -f '%g' 0 0.4 7.2`; do
     done
 done
 
+mkdir -p logs
+
 params=$(cat params.list | wc -l)
 echo "submitting fit_model array(1-$params)"
-fit=$(sbatch --parsable -c 8  --array=1-$params -o "slurm-%j.log" -e "slurm-%j.err" fit_model.sh)
+fit=$(sbatch --parsable -c 8  --array=1-$params -o "logs/slurm-%j.log" -e "logs/slurm-%j.err" fit_model.sh)
 echo $fit > jobid.fit
 
 echo "submitting fint_best"
-best=$(sbatch --parsable -c 16 --dependency=afterok:$fit -o "slurm-%j.log" -e "slurm-%j.err" find_best.sh)
+best=$(sbatch --parsable -c 16 --dependency=afterok:$fit -o "logs/slurm-%j.log" -e "logs/slurm-%j.err" find_best.sh)
 echo $best > jobid.best
 
 #else
