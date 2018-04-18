@@ -32,7 +32,7 @@ disp(['FitFullModel.. (alpha_v, lambda_, lambda_2)=(',num2str(alpha_v),',',num2s
 TimeFullFit = toc/60; % Time in minutes
 disp(['Time Fitting Full Model=',num2str(TimeFullFit),'mins'])
 
-save('optimal.mat', 'fe')
+save('optimal.mat', 'fe','-v7.3')
 info.parameters.opt.alpha_v = alpha_v;
 info.parameters.opt.lambda_1 = lambda_1;
 info.parameters.opt.lambda_2 = lambda_2;
