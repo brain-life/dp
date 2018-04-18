@@ -49,7 +49,28 @@ if [ $? -eq 0 ]; then
     exit 1
 fi
 
-#it must be running still then.. just output counts
-echo "$params running:$running_count completed:$completed_count"
+#was it canceled?
+scontrol show job $jobid_best | grep "CANCELED"
+if [ $? -eq 0 ]; then
+    echo "someone canceled!"
+    exit 2
+fi
+
+#is fit running?
+scontrol show job $jobid_fit | grep "RUNNING"
+if [ $? -eq 0 ]; then
+    echo "fitting .. $params running:$running_count completed:$completed_count"
+    exit 0
+fi
+
+#is best running?
+scontrol show job $jobid_best | grep "RUNNING"
+if [ $? -eq 0 ]; then
+    echo "finding best - creating final fe"
+    exit 0
+fi
+
+echo "can't figure out what's going on.."
+exit 3
 
 
