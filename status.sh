@@ -50,7 +50,7 @@ if [ $? -eq 0 ]; then
 fi
 
 #was it canceled?
-scontrol show job $jobid_best | grep "CANCELED"
+scontrol show job $jobid_best | grep "CANCELLED"
 if [ $? -eq 0 ]; then
     echo "someone canceled!"
     exit 2
