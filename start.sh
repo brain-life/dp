@@ -18,12 +18,13 @@ for alpha_v in `seq -f '%g' 0 0.4 7.2`; do
     done
 done
 
-mkdir -p logs
+#archive old logs
+if [ -d logs ]; then
+    mv logs logs.$(date +%F)
+fi
 
-#archive old logs (TODO - don't do this if there are no logs)
-oldlog=$(date +%F)
-mkdir -p logs/$oldlog
-mv logs/slurm* logs/$oldlog
+#create new logs
+mkdir -p logs
 
 params=$(cat params.list | wc -l)
 echo "submitting fit_model array(1-$params)"

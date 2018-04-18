@@ -9,7 +9,12 @@ end
 % load my own config.json
 config = loadjson('config.json')
 
-pool = parpool(config.workers) %24 didn't work
+%need to use different profile directory to make sure multiple jobs won't share the same directory and crash
+profile_dir=fullfile('./profile', int2str(feature('getpid')));
+mkdir(profile_dir);
+c = parcluster();
+c.JobStorageLocation = profile_dir;
+pool = parpool(c, config.workers);
 
 %load optimal values of parameters
 alpha_f = 0;

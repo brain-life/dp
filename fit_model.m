@@ -15,7 +15,13 @@ end
 taskid = getenv('SLURM_ARRAY_TASK_ID')
 config = loadjson('config.json')
 
-pool = parpool(config.workers) %24 didn't work
+%need to use different profile directory to make sure multiple jobs won't share the same directory and crash
+profile_dir=fullfile('./profile', int2str(feature('getpid')));
+mkdir(profile_dir);
+c = parcluster();
+c.JobStorageLocation = profile_dir;
+pool = parpool(c, config.workers);
+
 %rng(sum(100*clock)); % seed used for random selection of voxels (same seed for same experiment)
 
 disp([ 'alpha_v=', num2str(alpha_v), ...
