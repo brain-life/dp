@@ -52,9 +52,8 @@ if [ $? -eq 0 ]; then
     exit 2
 fi
 
-#is fit running?
-scontrol show job $jobid_fit | grep "RUNNING"
-if [ $? -eq 0 ]; then
+#is fit/best running?
+if [ ! "$running_count" -eq "0" ]; then
     echo "fitting .. $params running:$running_count completed:$completed_count"
     exit 0
 fi
