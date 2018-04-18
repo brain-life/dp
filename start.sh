@@ -20,6 +20,11 @@ done
 
 mkdir -p logs
 
+#archive old logs (TODO - don't do this if there are no logs)
+oldlog=$(date +%F)
+mkdir -p logs/$oldlog
+mv logs/slurm* logs/$oldlog
+
 params=$(cat params.list | wc -l)
 echo "submitting fit_model array(1-$params)"
 fit=$(sbatch --parsable -c 8  --array=1-$params -o "logs/slurm-%j.log" -e "logs/slurm-%j.err" fit_model.sh)
