@@ -39,29 +39,29 @@ if [ $failed_count != "0" ]; then
 fi
  
 #did it finish?
-scontrol show job $jobid_best | grep "COMPLETED"
+scontrol show job $jobid_best | grep "COMPLETED" > /dev/null
 if [ $? -eq 0 ]; then
     echo "finished!"
     exit 1
 fi
 
 #was it canceled?
-scontrol show job $jobid_best | grep "CANCELLED"
+scontrol show job $jobid_best | grep "CANCELLED" > /dev/null
 if [ $? -eq 0 ]; then
     echo "someone canceled!"
     exit 2
 fi
 
-#is fit/best running?
-if [ ! "$running_count" -eq "0" ]; then
-    echo "fitting .. $params running:$running_count completed:$completed_count"
+#is best running?
+scontrol show job $jobid_best | grep "RUNNING" > /dev/null
+if [ $? -eq 0 ]; then
+    echo "finding best - creating final fe"
     exit 0
 fi
 
-#is best running?
-scontrol show job $jobid_best | grep "RUNNING"
-if [ $? -eq 0 ]; then
-    echo "finding best - creating final fe"
+#is fit/best running?
+if [ ! "$running_count" -eq "0" ]; then
+    echo "fitting .. $params running:$running_count completed:$completed_count"
     exit 0
 fi
 
