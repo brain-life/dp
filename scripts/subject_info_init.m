@@ -9,19 +9,20 @@ info.name_base = strcat(info.dataset,'_',info.id,'_',info.tractography_type); % 
 %% Model general parameters
 info.parameters.L = 45;     % Number of discretization steps in spherical coordinates
 info.parameters.p = 0.5;    % percentage of training gradient directions (50% training and 50% testing)
-info.parameters.n = 0.01;    % 0.01;   % percentage of voxels used for crossvalidation. Ideally, we will want to fit using the 100% of tract voxels
+info.parameters.n = 0.05;    % 0.01;   % percentage of voxels used for crossvalidation. Ideally, we will want to fit using the 100% of tract voxels
                             % but we could reduce that percentange after we look at the results of experiments currently going on to see to 
                             % what extent we will be able to reduce the number of voxels safely.
                             % For testing the code it is suggested to use, for example, only 1% of voxels (0.01)
+info.parameters.m = 0.05;    % percentage of fibers used for crossvalidation.
                        
 
 %% GRID-SEARCH definition: Here we define an ideal space search defining a grid with a total of  19*7*5 = 665 points
 % For testing purposes, we suggest to reduce the number of points by
 % subsampling the set of points defined below for alpha_v, lambda_1 and lambda_2
-info.parameters.alpha_v = 0:0.4:7.5;                                % [0, 4, 7 ]  % 19 points
+info.parameters.alpha_v = [2,4,8];%0:0.4:7.5;                                % [0, 4, 7 ]  % 19 points
 info.parameters.alpha_f = 0;                                        % parameter set to zero always
-info.parameters.lambda_1 = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5];  %[1.0, 1.5, 2.0]; % 7 points
-info.parameters.lambda_2 = [0, 0.05, 0.1, 0.15, 0.2];               %[0, 0.1, 0.2]; % 5 points
+info.parameters.lambda_1 = [1.5,2];%[1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5];  %[1.0, 1.5, 2.0]; % 7 points
+info.parameters.lambda_2 = [0,0.2];%[0, 0.05, 0.1, 0.15, 0.2];               %[0, 0.1, 0.2]; % 5 points
 
 %% Random seed
 info.parameters.seed = sum(100*clock);

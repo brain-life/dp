@@ -26,6 +26,7 @@ feFileName    = info.name_base;  % file name for output
 L = info.parameters.L; % Discretization parameter
 p = info.parameters.p; % Training data proportion
 n = info.parameters.n; % voxel subsampling
+m = info.parameters.m; % fibers subsampling
 alpha_f = 0;
 
 %% STEP 1: Grid search fitting the model for a different set of parameters
@@ -42,7 +43,8 @@ for alpha_v = info.parameters.alpha_v
             
             % Fit the model in a single point in the space of parameters.
             tic
-            [~, results] = FitFullModelSampleAllTracts(dwiFile, fgFileName, feFileName, L, p, n, alpha_v, alpha_f, lambda_1, lambda_2, info.input.classification_path);
+            %[~, results] = FitFullModelSampleAllTracts(dwiFile, fgFileName, feFileName, L, p, n, alpha_v, alpha_f, lambda_1, lambda_2, info.input.classification_path);
+            [~, results] = FitFullModelSampleVoxels_and_Fibers(dwiFile, fgFileName, feFileName, L, p, n, m, alpha_v, alpha_f, lambda_1, lambda_2, info.input.classification_path);
             Time(i) = toc/60; % Time in minutes
             
             disp(' ');
