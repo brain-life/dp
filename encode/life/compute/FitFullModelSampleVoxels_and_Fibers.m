@@ -185,6 +185,8 @@ results.Error_B_vs_iter = Error_vs_iter;
 results.nnz = length(unique(fe.life.M.Phi.subs(:,3)));
 results.p = p;
 results.L = L;
+results.n = n;
+results.m = m;
 
 fe.life.M.Phi = Phi;
 fe.life.s0 = s0;
