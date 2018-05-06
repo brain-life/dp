@@ -26,6 +26,18 @@ fi
 #create new logs
 mkdir -p logs
 
+mkdir -p results
+
+#if all fit_model.sh gets submitted exactly at the same time, it could cause sharp memory usage spike which 
+#leads to job failurer. let's submit job to sleep for a while so that each node will start fit_model in staggered 
+#manner
+echo "submitting staggering jobs"
+for i in `seq 1 20`;
+do
+    time=$(($i%4 * 300))
+    srun -J "stagger $i.$time" -c 8 sleep $time &
+done
+
 params=$(cat params.list | wc -l)
 echo "submitting fit_model array(1-$params)"
 fit=$(sbatch --parsable -c 8  --array=1-$params -o "logs/slurm-%j.log" -e "logs/slurm-%j.err" fit_model.sh)

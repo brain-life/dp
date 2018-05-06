@@ -20,11 +20,12 @@ lambda_2=$(echo $params | cut -f4 -d" ")
 
 echo "SLURM_ARRAY_TASK_ID=$SLURM_ARRAY_TASK_ID running fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2)"
 
-if [ -f "results_alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat" ]; then
+if [ -f "results/alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat" ]; then
     echo "output file already exist.. skipping"
     exit 0
 fi
 
-echo "generating results_alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
+echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
 #time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
 time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
+

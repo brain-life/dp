@@ -18,7 +18,7 @@ pool = parpool(c, config.workers);
 
 %load optimal values of parameters
 alpha_f = 0;
-[alpha_v, lambda_1, lambda_2, ~] = Get_surface_grid_search('.');
+[alpha_v, lambda_1, lambda_2, ~] = Get_surface_grid_search('results');
 
 % Fit Full Model using optimal parameters and 100% of gradient directions
 tic
@@ -55,7 +55,7 @@ end
 
 %% Function that read all 
 function [alpha_v_min, lambda_1_min, lambda_2_min, error] = Get_surface_grid_search(dataInputPath)
-listing = dir(strcat(dataInputPath,'/results*.mat'));
+listing = dir(strcat(dataInputPath,'/alpha*.mat'));
 Nfiles = size(listing,1);
 for n=1:Nfiles
     disp(['reading file ',num2str(n),'/',num2str(Nfiles)])
