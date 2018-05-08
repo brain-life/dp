@@ -18,8 +18,6 @@ for alpha_v in `seq -f '%g' 0 1.0 14.4`; do
     done
 done
 
-exit
-
 #archive old logs
 if [ -d logs ]; then
     mv logs logs.$(date +%F)
