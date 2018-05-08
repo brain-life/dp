@@ -26,7 +26,7 @@ fi
 scontrol show job $jobid_fit | grep JobState > jobstate
 scontrol show job $jobid_best | grep JobState >> jobstate
 running_count=$(grep RUNNING jobstate | wc -l)
-completed_count=$(ls results*.mat 2>/dev/null | wc -l || true)
+completed_count=$(ls results/*.mat 2>/dev/null | wc -l || true)
 failed_count=$(grep FAILED jobstate | wc -l)
 params=$(wc -l params.list)
 
