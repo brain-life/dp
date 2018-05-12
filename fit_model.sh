@@ -29,3 +29,5 @@ echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lamb
 #time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
 time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
 
+#an attempt to make sure parpool clean up itself
+sleep 10
