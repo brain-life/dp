@@ -24,9 +24,9 @@ alpha_f = 0;
 tic
 disp(['FitFullModel.. (alpha_v, lambda_, lambda_2)=(',num2str(alpha_v),',',num2str(lambda_1),',',num2str(lambda_2),')'])
 [fe, results] = FitFullModel(...
-	config.dwi, ...
-	config.track, ...
-	'bogus', ...
+    config.dwi, ...
+    config.track, ...
+    'bogus', ...
     config.L, ...
     1, ...
     alpha_v, ...
@@ -83,12 +83,17 @@ figure
 %hold on
 ind2 = find(error.lambda_1 == lambda_1);
 ind3 = find(error.lambda_2 == lambda_2);
+xs = error.alpha_v(intersect(ind2,ind3));
+ys = error.value(intersect(ind2,ind3));
+
 %subplot(1,3,1)
-scatter(error.alpha_v(intersect(ind2,ind3)), error.value(intersect(ind2,ind3)))
+scatter(xs, ys)
 xlabel('\alpha_v');
 ylabel('Error');
 saveas(gcf, 'alpha_v.profile.png');
 close all;
+
+plot1 = make_plotly_data(xs, ys, 'alpha_v profile', 'alpha_v', 'Error');
 
 %% plot lambda_1 profile
 figure
@@ -96,23 +101,66 @@ figure
 %hold on
 ind1 = find(error.alpha_v == alpha_v);
 ind3 = find(error.lambda_2 == lambda_2);
+xs = error.lambda_1(intersect(ind1,ind3));
+ys = error.value(intersect(ind1,ind3));
+
 %subplot(1,3,2)
-scatter(error.lambda_1(intersect(ind1,ind3)), error.value(intersect(ind1,ind3)))
+scatter(xs, ys)
 xlabel('\lambda_1');
 ylabel('Error');
 saveas(gcf, 'lambda_1.profile.png');
 close all;
+
+plot2 = make_plotly_data(xs, ys, 'lambda_1 profile', 'lambda_1', 'Error');
 
 %% plot lambda_1 profile
 figure
 %set(gcf,'units','points','position',[200,400,800,200])
 ind1 = find(error.alpha_v == alpha_v);
 ind2 = find(error.lambda_1 == lambda_1);
+xs = error.lambda_2(intersect(ind1,ind2));
+ys = error.value(intersect(ind1,ind2));
+
 %subplot(1,3,3)
-scatter(error.lambda_2(intersect(ind1,ind2)), error.value(intersect(ind1,ind2)))
+scatter(xs, ys)
 xlabel('\lambda_2');
 ylabel('Error');
 saveas(gcf, 'lambda_2.profile.png');
 close all;
+
+plot3 = make_plotly_data(xs, ys, 'lambda_2 profile', 'lambda_2', 'Error');
+
+product_json = {plot1, plot2, plot3};
+savejson('brainlife', product_json, 'product.json');
+
+end
+
+%% make plotly plot data
+function out = make_plotly_data(xs, ys, plotTitle, xaxisTitle, yaxisTitle)
+
+out = struct;
+
+out.data = struct;
+out.layout = struct;
+out.type = 'plotly';
+
+out.data.x = xs;
+out.data.y = ys;
+out.data.type = 'scatter';
+out.data.mode = 'markers';
+out.data.marker = struct;
+out.data.marker.symbol = 'circle-open';
+out.data.marker.size = 8;
+out.data = {out.data};
+
+out.layout.title = plotTitle;
+
+out.layout.xaxis = struct;
+out.layout.xaxis.title = xaxisTitle;
+out.layout.xaxis.type = 'linear';
+
+out.layout.yaxis = struct;
+out.layout.yaxis.title = yaxisTitle;
+out.layout.yaxis.type = 'linear';
 
 end
