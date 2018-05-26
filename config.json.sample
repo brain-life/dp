@@ -1,6 +1,6 @@
 {
     "workers": 4,
-	"dwi": "/N/u/hayashis/testdata/ccaiafa/diffusion_data/dwi_data_b2000_aligned_trilin.nii.gz",
+	"dtiini": "/N/u/hayashis/testdata/ccaiafa/dtiinit/aligned.nii.gz",
 	"track": "/N/u/hayashis/testdata/ccaiafa/tractography/dwi_data_b2000_aligned_trilin_csd_lmax10_wm_SD_PROB-NUM01-500000.tck",
 	"afq": "/N/u/hayashis/testdata/ccaiafa/classification/fe_structure_105115_STC_run01_500000_SD_PROB_lmax10_connNUM01_TRACTS-nocull.mat",
 	"m": 1.0,

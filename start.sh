@@ -25,7 +25,6 @@ fi
 
 #create new logs
 mkdir -p logs
-
 mkdir -p results
 
 #if all fit_model.sh gets submitted exactly at the same time, it could cause sharp memory usage spike which 
