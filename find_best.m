@@ -9,6 +9,10 @@ end
 % load my own config.json
 config = loadjson('config.json')
 
+disp('loading dt6.mat')
+dt6 = loadjson(fullfile(config.dtiinit, 'dt6.json'))
+aligned_dwi = fullfile(config.dtiinit, dt6.files.alignedDwRaw)
+
 %need to use different profile directory to make sure multiple jobs won't share the same directory and crash
 profile_dir=fullfile('./profile', int2str(feature('getpid')));
 mkdir(profile_dir);
@@ -24,7 +28,7 @@ alpha_f = 0;
 tic
 disp(['FitFullModel.. (alpha_v, lambda_, lambda_2)=(',num2str(alpha_v),',',num2str(lambda_1),',',num2str(lambda_2),')'])
 [fe, results] = FitFullModel(...
-    config.dwi, ...
+    aligned_dwi, ...
     config.track, ...
     'bogus', ...
     config.L, ...
