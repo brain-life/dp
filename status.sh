@@ -65,6 +65,13 @@ if [ ! "$running_count" -eq "0" ]; then
     exit 0
 fi
 
+#is best running?
+scontrol show job $jobid_fit | grep "PENDING" > /dev/null
+if [ $? -eq 0 ]; then
+    echo "waiting for resource ..."
+    exit 0
+fi
+
 echo "can't figure out what's going on.."
 exit 3
 
