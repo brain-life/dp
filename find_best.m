@@ -1,7 +1,8 @@
 function [] = find_best()
 
 if ~isdeployed
-    addpath(genpath('./encode')); %has FitFullModelSampleAlltracts (not the same as brain-life/encode)
+    %addpath(genpath('/home/hayashis/git/encode'));
+    addpath(genpath('./encode'));
     addpath(genpath('/home/hayashis/git/vistasoft'));
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
@@ -42,7 +43,7 @@ TimeFullFit = toc/60; % Time in minutes
 disp(['Time Fitting Full Model=',num2str(TimeFullFit),'mins'])
 
 %fe will be >2G need to save in matlab format
-save('optimal.mat', 'fe', '-v7.3');
+save('fe_optimal.mat', 'fe', '-v7.3');
 
 info.parameters.opt.alpha_v = alpha_v;
 info.parameters.opt.lambda_1 = lambda_1;

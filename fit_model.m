@@ -7,7 +7,9 @@ if isdeployed
     lambda_1 = str2num(lambda_1)
     lambda_2 = str2num(lambda_2)
 else
-    addpath(genpath('./encode')); %has FitFullModelSampleAlltracts (not the same as brain-life/encode)
+    disp('loading paths')
+    %addpath(genpath('/home/hayashis/git/encode')); 
+    addpath(genpath('./encode')); 
     addpath(genpath('/home/hayashis/git/vistasoft'));
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
