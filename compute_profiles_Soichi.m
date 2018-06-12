@@ -40,7 +40,7 @@ tract2 = 'SLF_L';
 other_tracts = {'ARC_L','Thal_Rad_L'};
 
 %Gen_niftis_crossing_tracts(info, bvals, 'CST_L', 'SLF_L')
-Gen_niftis_crossing_tracts_new(info, tract1, tract2, other_tracts)
+Gen_niftis_crossing_tracts(info, tract1, tract2, other_tracts)
 
 
 %% 2- Comute FAs using VISTASOFT
