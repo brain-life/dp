@@ -103,7 +103,8 @@ niftiWrite(ni,fName);
 % fe is already loaded
 name = fullfile(dataOutputPath,strcat(subject,'_pred_full.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-dwi = feGet(fe, 'dwi'); % load dwi structure
+%dwi = feGet(fe, 'dwi'); % load dwi structure
+dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 diff_signal = feGet(fe,'pred full');
 Generate_nifti(ni,name,coords,dwi,diff_signal);
 
@@ -115,35 +116,37 @@ load(info.input.classification_path);
 tract_set   = [tract_number_1, tract_number_2];
 tract_names = {tract_name_1, tract_name_2};
 for i=1:length(tract_set)
-    Gen_nifti_single_tract(fe,classification,tract_set(i),tract_names{i}, dataOutputPath, subject, ni)
+    Gen_nifti_single_tract(fe,classification,tract_set(i),tract_names{i}, dataOutputPath, subject, ni, info)
 end
 
 %% Generate niftis for crossing tracts prediction
-Gen_nifti_crossing_tracts(fe,classification,tract_number_1,tract_number_2,strcat(tract_name_1, '_', tract_name_2), dataOutputPath, subject, ni)
+Gen_nifti_crossing_tracts(fe,classification,tract_number_1,tract_number_2,strcat(tract_name_1, '_', tract_name_2), dataOutputPath, subject, ni, info)
 
 
 end
 
-function [] = Gen_nifti_single_tract(fe,classification,tract,fgName,dataOutputPath,subject,ni)
+function [] = Gen_nifti_single_tract(fe,classification,tract,fgName,dataOutputPath,subject,ni,info)
 %fgName = classification{tract}.name;
 %fgName = strrep(fgName,' ','');
 
 name = fullfile(dataOutputPath,strcat(subject,'_',fgName,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-dwi = feGet(fe, 'dwi'); % load dwi structure
+%dwi = feGet(fe, 'dwi'); % load dwi structure
+dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = find(classification.index == tract);
 diff_signal = feGet(fe,'pred tract',fibers);
 diff_signal(diff_signal==0) = NaN;
 Generate_nifti(ni,name,coords,dwi,diff_signal);
 end
 
-function [] = Gen_nifti_crossing_tracts(fe,classification,tract1,tract2,fgName,dataOutputPath,subject,ni)
+function [] = Gen_nifti_crossing_tracts(fe,classification,tract1,tract2,fgName,dataOutputPath,subject,ni,info)
 %fgName = classification{tract}.name;
 %fgName = strrep(fgName,' ','');
 
 name = fullfile(dataOutputPath,strcat(subject,'_',fgName,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-dwi = feGet(fe, 'dwi'); % load dwi structure
+%dwi = feGet(fe, 'dwi'); % load dwi structure
+dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers1 = find(classification.index == tract1);
 fibers2 = find(classification.index == tract2);
 fibers = [fibers1; fibers2];

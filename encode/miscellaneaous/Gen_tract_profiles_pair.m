@@ -133,9 +133,10 @@ FAfile1 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',t
 famp1 = niftiRead(FAfile1);
 [FA_tract1, SuperFiber1, ~, ~] = Compute_FA_AlongFG(fgcx1, famp1, [], [], Nnodes);
 
-%% Compute profile tract1 using FA based on tract1 + tract2
+%% Compute profile tract1 using FA based on tract1 + tract2 + other tracts
 FileName = strcat(tract_name1, '_',tract_name2);
-FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'.nii.gz')))));
+FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'_new.nii.gz')))));
+%FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'.nii.gz')))));
 famp12 = niftiRead(FAfile12);
 [FA_tract1_12, ~]= Compute_FA_AlongFG(fgcx1, famp12, [], [], Nnodes);
 
@@ -151,8 +152,14 @@ FAfile2 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',t
 famp2 = niftiRead(FAfile2);
 [FA_tract2, SuperFiber2, ~, ~] = Compute_FA_AlongFG(fgcx2, famp2, [], [], Nnodes);
 
-%% Compute profile tract2 using FA based on tract1 + tract2
+%% Compute profile tract2 using FA based on tract1 + tract2 + other tracts
 [FA_tract2_12, ~]= Compute_FA_AlongFG(fgcx2, famp12, [], [], Nnodes);
+
+%% Compute tract profile using FA based on prediction
+FAfilePred = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_','pred_full.nii.gz')))));
+fampPred = niftiRead(FAfilePred);
+[FA_tract1_pred, ~]= Compute_FA_AlongFG(fgcx1, fampPred, [], [], Nnodes);
+[FA_tract2_pred, ~]= Compute_FA_AlongFG(fgcx2, fampPred, [], [], Nnodes);
 
 %% Find tract crossing point
 A1 = reshape(SuperFiber1.fibers{1},[3,Nnodes,1]);   % 3 x N     -> 3 x N x 1
@@ -169,13 +176,21 @@ Node_cross1 = indrow(indcol);
 Node_cross2 = indcol;
 
 
+% %% Plot tract1 profile
+% Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', tract_name1, tract_name2, 10, Nnodes, Node_cross1, subject)
+% Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',[],'k', tract_name1,tract_name2, 10, Nnodes, Node_cross1, subject)
+% 
+% %% Plot tract2 profile
+% Gen_profile_plot(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
+% Gen_profile_plot(FA_tract2, 'b',FA_tract2_12,'g', [],'k', tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
+
 %% Plot tract1 profile
-Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k',tract_name1, tract_name2, 10, Nnodes, Node_cross1)
-Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',[],'k', tract_name1,tract_name2, 10, Nnodes, Node_cross1)
+Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', FA_tract1_pred,'y',tract_name1, tract_name2, 10, Nnodes, Node_cross1, subject)
+%Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',[],'k',FA_tract1_pred,'y', tract_name1,tract_name2, 10, Nnodes, Node_cross1, subject)
 
 %% Plot tract2 profile
-Gen_profile_plot(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k', tract_name2, tract_name1, 10, Nnodes, Node_cross2)
-Gen_profile_plot(FA_tract2, 'b',FA_tract2_12,'g', [],'k', tract_name2, tract_name1, 10, Nnodes, Node_cross2)
+Gen_profile_plot_new(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
+%Gen_profile_plot_new(FA_tract2, 'b',FA_tract2_12,'g', [],'k', FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
 
 %% Plot super fibers
 % figure
@@ -187,7 +202,7 @@ Gen_profile_plot(FA_tract2, 'b',FA_tract2_12,'g', [],'k', tract_name2, tract_nam
 
 end
 
-function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross)
+function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross, subject)
 
 N = size(FA_tract1_12,1);
 figure
@@ -219,9 +234,58 @@ set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
     'box','off','XTick', [0 round(Nnodes)/2 Nnodes], 'YTick', [0 0.2 0.4 0.6 0.8], 'FontSize', 12);
 xlim(gca,[1 Nnodes]);
 ylim(gca,[0 0.8]);
-title(tract_name1, 'FontSize', 14)
+
+title_str = strcat(subject,'-',tract_name1);
+newStr = strrep(title_str,'_','-');
+title(newStr, 'FontSize', 14)
 xlabel('Nodes Along Tract', 'FontSize', 14);
 ylabel('FA Value', 'FontSize', 14);
 hold off;
 
 end
+
+function [] = Gen_profile_plot_new(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, FA_pred, clrp,tract_name1, tract_name2, s, Nnodes, Node_cross, subject)
+
+N = size(FA_tract1_12,1);
+figure
+hold on
+if ~isempty(FA_tract1_12)
+    h2 = shadedErrorBar(1:Nnodes,nanmean(FA_tract1_12,1),s*nanstd(FA_tract1_12)/sqrt(N),'lineprops',clr12);
+end
+if ~isempty(FA_tract1)
+    h1 = shadedErrorBar(1:Nnodes,nanmean(FA_tract1,1),s*nanstd(FA_tract1)/sqrt(N),'lineprops',clr1);
+end
+if ~isempty(FA_tract1_orig)
+    h3 = shadedErrorBar(1:Nnodes,nanmean(FA_tract1_orig,1),s*nanstd(FA_tract1_orig)/sqrt(N),'lineprops',clrorig);
+end
+if ~isempty(FA_pred)
+    h3 = shadedErrorBar(1:Nnodes,nanmean(FA_pred,1),s*nanstd(FA_pred)/sqrt(N),'lineprops',clrp);
+end
+
+%
+%legend([h1.mainLine, h2.mainLine],tract_name1,strcat(tract_name1,'+',tract_name2))
+if ~isempty(FA_tract1)&&isempty(FA_tract1_orig)
+   legend([h1.mainLine, h2.mainLine],tract_name1,strcat(tract_name1,'+',tract_name2))
+elseif isempty(FA_tract1)
+   legend([h2.mainLine, h3.mainLine],'Pred full','Orig')
+else
+   legend([h1.mainLine, h2.mainLine, h3.mainLine],tract_name1,strcat(tract_name1,'+',tract_name2),'Original')
+end
+
+
+%plot([Node_cross Node_cross],[0,0.8],'-k','DisplayName','crossing')
+
+set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
+    'box','off','XTick', [0 round(Nnodes)/2 Nnodes], 'YTick', [0 0.2 0.4 0.6 0.8], 'FontSize', 12);
+xlim(gca,[1 Nnodes]);
+ylim(gca,[0 0.8]);
+
+title_str = strcat(subject,'-',tract_name1);
+newStr = strrep(title_str,'_','-');
+title(newStr, 'FontSize', 14)
+xlabel('Nodes Along Tract', 'FontSize', 14);
+ylabel('FA Value', 'FontSize', 14);
+hold off;
+
+end
+
