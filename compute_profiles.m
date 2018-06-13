@@ -26,9 +26,9 @@ info.segmentation_type = 'AFQ'; % In the future we could use a more complete seg
 info.input = struct;
 info.input.dwi_path = aligned_dwi;
 info.input.classification_path = config.afq;
+info.input.optimal = config.optimal;
 info.output = struct;
 info.output.niftis = 'output';
-info.output.dp = config.dp;
 bvals = dlmread(bvalsFile);
 
 data_out_path = fullfile(info.output.niftis);

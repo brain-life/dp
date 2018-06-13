@@ -86,7 +86,7 @@ dataOutputPath = info.output.niftis;
 
 %% load fe structure
 %FileName = deblank(ls(fullfile(dataInputPath,strcat('fe_*.mat'))));
-FileName = fullfile(info.output.dp, 'fe_optimal.mat');
+FileName = info.input.optimal;
 load(FileName);
 %dwiFile = fe.path.dwifile;
 dwiFile = info.input.dwi_path;

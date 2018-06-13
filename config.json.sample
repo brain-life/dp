@@ -1,13 +1,7 @@
 {
-    "workers": 4,
-	"dtiinit": "/N/u/hayashis/testdata/dp/dtiinit/.",
-	"track": "/N/u/hayashis/testdata/dp/track/track.tck",
-	"afq": "/N/u/hayashis/testdata/dp/afq/output.mat",
-	"dp": "/N/u/hayashis/testdata/dp",
-	"m": 0.1,
-	"L": 45,
-	"p": 0.5,
-	"n": 1,
-    "command": "dp"
+    "dtiinit": "../5b213eade5754e0029d4d3f4/5b09b226e81b47020407c53c/.",
+    "optimal": "../5b213eade5754e0029d4d3f4/5b0ac591e81b47020407c781/fe_optimal.mat",
+    "afq": "../5b213eade5754e0029d4d3f4/5b0cd0e8e81b47020407c90a/output.mat",
+    "command": "profile"
 }
 
