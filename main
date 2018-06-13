@@ -3,7 +3,7 @@
 #PBS -l vmem=16gb
 #PBS -l walltime=05:00:00
 command=$(jq -r .command config.json)
-if [ $command -eq "profile" ]; then
+if [ $command == "profile" ]; then
     time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/compute_profiles
     if [ ! -f output/dt6.mat ]; then
         echo "failed to product output"

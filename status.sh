@@ -6,7 +6,7 @@
 #return code 3 = unknown (retry later)
 
 command=$(jq -r .command config.json)
-if [ $command -eq "dp" ]; then
+if [ $command == "dp" ]; then
     ./status_dp.sh
 else
     status
