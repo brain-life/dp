@@ -1,7 +1,7 @@
 {
-    "dtiinit": "../5b213eade5754e0029d4d3f4/5b09b226e81b47020407c53c/.",
-    "optimal": "../5b213eade5754e0029d4d3f4/5b0ac591e81b47020407c781/fe_optimal.mat",
-    "afq": "../5b213eade5754e0029d4d3f4/5b0cd0e8e81b47020407c90a/output.mat",
+    "dtiinit": "/N/u/hayashis/testdata/dp/dtiinit/.",
+    "optimal": "/N/u/hayashis/testdata/dp/fe_optimal.mat",
+    "afq": "/N/u/hayashis/testdata/dp/afq/output.mat",
     "command": "profile"
 }
 

@@ -3,6 +3,7 @@ function [] = compute_profiles()
 % 1 - Generate nifti with prdiction of signal given the pair of tracts CST_L and SLF_L
 % 2 - Use VITASOFT to compute FA on predictions
 
+
 if ~isdeployed
     %addpath(genpath('/home/hayashis/git/encode'));
     addpath(genpath('./encode'));
@@ -10,13 +11,14 @@ if ~isdeployed
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
 
+%# function sptensor
+
 mkdir('output');
 config = loadjson('config.json')
 
 disp('loading dt6.mat')
 dt6 = loadjson(fullfile(config.dtiinit, 'dt6.json'))
 aligned_dwi = fullfile(config.dtiinit, dt6.files.alignedDwRaw)
-%aligned_dwi = '/N/dc2/projects/lifebid/code/ccaiafa/Diffusion_predictor_paper/Repositories/Diff_Pred_paper/results/HCP3T-PROB/105115_dtinit_t9/data/diffusion_data/dwi_aligned_trilin_noMEC.nii.gz';
 bvecsFile = strcat(aligned_dwi(1:end-6),'bvecs');
 bvalsFile = strcat(aligned_dwi(1:end-6),'bvals');    
 
