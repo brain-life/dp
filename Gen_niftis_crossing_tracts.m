@@ -83,13 +83,10 @@ end
 
 %% Set the Path for the output
 dataOutputPath = info.output.niftis;
-dataInputPath = info.output.results_root;
-
-subject = info.name_base;
-
 
 %% load fe structure
-FileName = deblank(ls(fullfile(dataInputPath,strcat('fe_*.mat'))));
+%FileName = deblank(ls(fullfile(dataInputPath,strcat('fe_*.mat'))));
+FileName = fullfile(info.output.dp, 'fe_optimal.mat');
 load(FileName);
 %dwiFile = fe.path.dwifile;
 dwiFile = info.input.dwi_path;
@@ -98,23 +95,19 @@ dwiFile = info.input.dwi_path;
 %bvecsFile = strcat(dwiFile(1:end-6),'bvecs');
 %bvalsFile = strcat(dwiFile(1:end-6),'bvals');
 
-%files.b = strcat(dataOutputPath,'/',subject,'.b'); % File name for .b file
-%mrtrix_bfileFromBvecs(bvecsFile, bvalsFile, files.b)
-
 %% Generate nifti for original data 
 ni = niftiRead(dwiFile);
-fName = fullfile(dataOutputPath,strcat(subject,'_original.nii.gz'));
+fName = fullfile(dataOutputPath,strcat('original.nii.gz'));
 niftiWrite(ni,fName);
 
 %% Generate nifti using the predicted diffusion signal based on the model fit to the original data
 % fe is already loaded
-name = fullfile(dataOutputPath,strcat(subject,'_pred_full.nii.gz'));
+name = fullfile(dataOutputPath,strcat('pred_full.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 %dwi = feGet(fe, 'dwi'); % load dwi structure
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 diff_signal = feGet(fe,'pred full');
 Generate_nifti(ni,name,coords,dwi,diff_signal);
-
 
 %% Load classification file
 load(info.input.classification_path);
@@ -123,23 +116,19 @@ load(info.input.classification_path);
 tract_set   = [tract_number_1, tract_number_2];
 tract_names = {tract_name_1, tract_name_2};
 for i=1:length(tract_set)
-    Gen_nifti_single_tract(fe,classification,tract_set(i),tract_names{i}, dataOutputPath, subject, ni, info)
+    Gen_nifti_single_tract(fe,classification,tract_set(i),tract_names{i}, dataOutputPath, ni, info)
 end
 
 %% Generate niftis for crossing tracts prediction
 Gen_nifti_crossing_tracts(fe,classification, tract_number_1, tract_number_2, other_tract_number, ...
-                            strcat(tract_name_1, '_', tract_name_2,'_new'), dataOutputPath, subject, ni, info)
-
+                            strcat(tract_name_1, '_', tract_name_2,'_new'), dataOutputPath, ni, info)
 
 end
 
-function [] = Gen_nifti_single_tract(fe,classification,tract,fgName,dataOutputPath,subject,ni,info)
-%fgName = classification{tract}.name;
-%fgName = strrep(fgName,' ','');
+function [] = Gen_nifti_single_tract(fe,classification,tract,fgName,dataOutputPath,ni,info)
 
-name = fullfile(dataOutputPath,strcat(subject,'_',fgName,'.nii.gz'));
+name = fullfile(dataOutputPath,strcat(fgName,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-%dwi = feGet(fe, 'dwi'); % load dwi structure
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = find(classification.index == tract);
 diff_signal = feGet(fe,'pred tract',fibers);
@@ -147,13 +136,10 @@ diff_signal(diff_signal==0) = NaN;
 Generate_nifti(ni,name,coords,dwi,diff_signal);
 end
 
-function [] = Gen_nifti_crossing_tracts(fe,classification,tract1,tract2,other_tract_number,fgName,dataOutputPath,subject,ni,info)
-%fgName = classification{tract}.name;
-%fgName = strrep(fgName,' ','');
+function [] = Gen_nifti_crossing_tracts(fe,classification,tract1,tract2,other_tract_number,fgName,dataOutputPath,ni,info)
 
-name = fullfile(dataOutputPath,strcat(subject,'_',fgName,'.nii.gz'));
+name = fullfile(dataOutputPath,strcat(fgName,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-%dwi = feGet(fe, 'dwi'); % load dwi structure
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers1 = find(classification.index == tract1);
 fibers2 = find(classification.index == tract2);

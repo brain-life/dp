@@ -73,7 +73,6 @@ FileName = deblank(ls(fullfile(dataPath,strcat('fe_*.mat'))));
 load(FileName);
 
 %% Load classification file
-subject = info.name_base;      
 ClassFileName = info.input.classification_path;
 load(ClassFileName);
 %classification.index = class.index;
@@ -96,7 +95,7 @@ end
 
 % Set parameters
 %std_parameter = 3;
-nameroot = subject;
+nameroot = 'nosub';
 Nnodes = 50;
 
 if isfield(fe.life.fit, 'weights')
@@ -136,7 +135,6 @@ famp1 = niftiRead(FAfile1);
 %% Compute profile tract1 using FA based on tract1 + tract2 + other tracts
 FileName = strcat(tract_name1, '_',tract_name2);
 FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'_new.nii.gz')))));
-%FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'.nii.gz')))));
 famp12 = niftiRead(FAfile12);
 [FA_tract1_12, ~]= Compute_FA_AlongFG(fgcx1, famp12, [], [], Nnodes);
 
@@ -145,7 +143,6 @@ FAfileOrig = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_
 fampOrig = niftiRead(FAfileOrig);
 [FA_tract1_orig, ~]= Compute_FA_AlongFG(fgcx1, fampOrig, [], [], Nnodes);
 [FA_tract2_orig, ~]= Compute_FA_AlongFG(fgcx2, fampOrig, [], [], Nnodes);
-
 
 %% Compute profile tract2 using FA based on  tract 2 ONLY
 FAfile2 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',tract_name2,'.nii.gz')))));
@@ -175,34 +172,14 @@ dist = squeeze(sum((A1 - A2).^2,1));
 Node_cross1 = indrow(indcol);
 Node_cross2 = indcol;
 
-
-% %% Plot tract1 profile
-% Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', tract_name1, tract_name2, 10, Nnodes, Node_cross1, subject)
-% Gen_profile_plot(FA_tract1,'r',FA_tract1_12,'g',[],'k', tract_name1,tract_name2, 10, Nnodes, Node_cross1, subject)
-% 
-% %% Plot tract2 profile
-% Gen_profile_plot(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
-% Gen_profile_plot(FA_tract2, 'b',FA_tract2_12,'g', [],'k', tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
-
-%% Plot tract1 profile
-Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', FA_tract1_pred,'y',tract_name1, tract_name2, 10, Nnodes, Node_cross1, subject)
-%Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',[],'k',FA_tract1_pred,'y', tract_name1,tract_name2, 10, Nnodes, Node_cross1, subject)
+Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', FA_tract1_pred,'y',tract_name1, tract_name2, 10, Nnodes, Node_cross1)
 
 %% Plot tract2 profile
-Gen_profile_plot_new(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
-%Gen_profile_plot_new(FA_tract2, 'b',FA_tract2_12,'g', [],'k', FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2, subject)
-
-%% Plot super fibers
-% figure
-% scatter3(SuperFiber1.fibers{1}(1,:)',SuperFiber1.fibers{1}(2,:)',SuperFiber1.fibers{1}(3,:)');
-% hold on
-% scatter3(SuperFiber2.fibers{1}(1,:)',SuperFiber2.fibers{1}(2,:)',SuperFiber2.fibers{1}(3,:)');
-
-
+Gen_profile_plot_new(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2)
 
 end
 
-function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross, subject)
+function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross)
 
 N = size(FA_tract1_12,1);
 figure
@@ -235,7 +212,7 @@ set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
 xlim(gca,[1 Nnodes]);
 ylim(gca,[0 0.8]);
 
-title_str = strcat(subject,'-',tract_name1);
+title_str = tract_name1;
 newStr = strrep(title_str,'_','-');
 title(newStr, 'FontSize', 14)
 xlabel('Nodes Along Tract', 'FontSize', 14);
@@ -244,7 +221,7 @@ hold off;
 
 end
 
-function [] = Gen_profile_plot_new(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, FA_pred, clrp,tract_name1, tract_name2, s, Nnodes, Node_cross, subject)
+function [] = Gen_profile_plot_new(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, FA_pred, clrp,tract_name1, tract_name2, s, Nnodes, Node_cross)
 
 N = size(FA_tract1_12,1);
 figure
@@ -280,7 +257,7 @@ set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
 xlim(gca,[1 Nnodes]);
 ylim(gca,[0 0.8]);
 
-title_str = strcat(subject,'-',tract_name1);
+title_str = tract_name1;
 newStr = strrep(title_str,'_','-');
 title(newStr, 'FontSize', 14)
 xlabel('Nodes Along Tract', 'FontSize', 14);

@@ -16,6 +16,7 @@ config = loadjson('config.json')
 disp('loading dt6.mat')
 dt6 = loadjson(fullfile(config.dtiinit, 'dt6.json'))
 aligned_dwi = fullfile(config.dtiinit, dt6.files.alignedDwRaw)
+%aligned_dwi = '/N/dc2/projects/lifebid/code/ccaiafa/Diffusion_predictor_paper/Repositories/Diff_Pred_paper/results/HCP3T-PROB/105115_dtinit_t9/data/diffusion_data/dwi_aligned_trilin_noMEC.nii.gz';
 bvecsFile = strcat(aligned_dwi(1:end-6),'bvecs');
 bvalsFile = strcat(aligned_dwi(1:end-6),'bvals');    
 
@@ -27,10 +28,16 @@ info.input.dwi_path = aligned_dwi;
 info.input.classification_path = config.afq;
 info.output = struct;
 info.output.niftis = 'output';
-info.output.results_root = 'results';
-info.name_base = 'whatever';
+info.output.dp = config.dp;
 bvals = dlmread(bvalsFile);
-Gen_niftis_crossing_tracts(info, bvals, 'CST_L', 'SLF_L')
+
+data_out_path = fullfile(info.output.niftis);
+
+tract1 = 'CST_L';
+tract2 = 'SLF_L';
+other_tracts = {'ARC_L','Thal_Rad_L'};
+
+Gen_niftis_crossing_tracts(info, tract1, tract2, other_tracts)
 
 %% 2- Comute FAs using VISTASOFT
 listing = dir(strcat('output/*.nii.gz'));
@@ -42,7 +49,7 @@ bs.showProgress = false;
 ni = niftiRead(aligned_dwi);
 for n=1:Nfiles
     dwRawAligned = fullfile('output',listing(n).name);
-    [dt6FileName]= dtiRawFitTensorMex(dwRawAligned, bvecsFile, bvalsFile, data_out_path,bs,[],'ls', [], [], 1);
+    [dt6FileName]= dtiRawFitTensorMex(dwRawAligned, bvecsFile, bvalsFile, data_out_path, bs,[],'ls', [], [], 1);
     dt = dtiLoadDt6(dt6FileName);
     val_dt6 = dt.dt6;
     [nil, eigVal] = dtiSplitTensor(val_dt6);
