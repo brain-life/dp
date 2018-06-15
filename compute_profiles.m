@@ -8,6 +8,7 @@ if ~isdeployed
     %addpath(genpath('/home/hayashis/git/encode'));
     addpath(genpath('./encode'));
     addpath(genpath('/home/hayashis/git/vistasoft'));
+    addpath(genpath('/N/dc2/projects/lifebid/code/mba/'))
     addpath(genpath('/home/hayashis/git/jsonlab'));
 end
 
@@ -66,5 +67,8 @@ for n=1:Nfiles
     ni_out.data = val1;
     niftiWrite(ni_out,name);
 end
+
+%% 3- Compute and plot profiles
+Gen_tract_profiles_pair(info, tract1, tract2, 10)
 
 end

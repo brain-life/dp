@@ -64,13 +64,14 @@ function [] = Gen_tract_profiles_pair(info, tract_name1, tract_name2, std_parame
 %   38      ILF_R             Right ILF
 
 
-addpath(genpath(info.repo.mba));
+%addpath(genpath(info.repo.mba));
 
 dataPath = info.output.results_root;
 
 %% load fe_structure
-FileName = deblank(ls(fullfile(dataPath,strcat('fe_*.mat'))));
-load(FileName);
+%FileName = deblank(ls(fullfile(dataPath,strcat('fe_*.mat'))));
+%load(FileName);
+load(info.input.optimal);
 
 %% Load classification file
 ClassFileName = info.input.classification_path;
@@ -128,24 +129,24 @@ fgex2 = MyfgCreate_img('name', fgName2, 'colorRgb', [0 0 1], 'fibers', fgTract2)
 fgcx2 = mbaComputeFibersOutliers(fgex2, std_parameter, std_parameter, 100, 'mean');
 
 %% Compute profile tract1 using FA based on  tract 1 ONLY
-FAfile1 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',tract_name1,'.nii.gz')))));
+FAfile1 = deblank(ls(char(fullfile(dataPath,strcat('FA_',tract_name1,'.nii.gz')))));
 famp1 = niftiRead(FAfile1);
 [FA_tract1, SuperFiber1, ~, ~] = Compute_FA_AlongFG(fgcx1, famp1, [], [], Nnodes);
 
 %% Compute profile tract1 using FA based on tract1 + tract2 + other tracts
 FileName = strcat(tract_name1, '_',tract_name2);
-FAfile12 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',FileName,'_new.nii.gz')))));
+FAfile12 = deblank(ls(char(fullfile(dataPath,strcat('FA_',FileName,'_new.nii.gz')))));
 famp12 = niftiRead(FAfile12);
 [FA_tract1_12, ~]= Compute_FA_AlongFG(fgcx1, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on original
-FAfileOrig = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_','original.nii.gz')))));
+FAfileOrig = deblank(ls(char(fullfile(dataPath,strcat('FA_','original.nii.gz')))));
 fampOrig = niftiRead(FAfileOrig);
 [FA_tract1_orig, ~]= Compute_FA_AlongFG(fgcx1, fampOrig, [], [], Nnodes);
 [FA_tract2_orig, ~]= Compute_FA_AlongFG(fgcx2, fampOrig, [], [], Nnodes);
 
 %% Compute profile tract2 using FA based on  tract 2 ONLY
-FAfile2 = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_',tract_name2,'.nii.gz')))));
+FAfile2 = deblank(ls(char(fullfile(dataPath,strcat('FA_',tract_name2,'.nii.gz')))));
 famp2 = niftiRead(FAfile2);
 [FA_tract2, SuperFiber2, ~, ~] = Compute_FA_AlongFG(fgcx2, famp2, [], [], Nnodes);
 
@@ -153,7 +154,7 @@ famp2 = niftiRead(FAfile2);
 [FA_tract2_12, ~]= Compute_FA_AlongFG(fgcx2, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on prediction
-FAfilePred = deblank(ls(char(fullfile(dataPath,'niftis',strcat('FA_',nameroot,'_','pred_full.nii.gz')))));
+FAfilePred = deblank(ls(char(fullfile(dataPath,strcat('FA_','pred_full.nii.gz')))));
 fampPred = niftiRead(FAfilePred);
 [FA_tract1_pred, ~]= Compute_FA_AlongFG(fgcx1, fampPred, [], [], Nnodes);
 [FA_tract2_pred, ~]= Compute_FA_AlongFG(fgcx2, fampPred, [], [], Nnodes);
@@ -173,10 +174,28 @@ Node_cross1 = indrow(indcol);
 Node_cross2 = indcol;
 
 Gen_profile_plot_new(FA_tract1,'r',FA_tract1_12,'g',FA_tract1_orig,'k', FA_tract1_pred,'y',tract_name1, tract_name2, 10, Nnodes, Node_cross1)
+saveas(gcf, strcat('./results/FA_profile_',tract_name1,'.fig'));
+saveas(gcf, strcat('./results/FA_profile_',tract_name1,'.pdf'));
+saveas(gcf, strcat('./results/FA_profile_',tract_name1,'.png'));
 
 %% Plot tract2 profile
 Gen_profile_plot_new(FA_tract2,'b',FA_tract2_12,'g', FA_tract2_orig,'k',  FA_tract2_pred,'y',tract_name2, tract_name1, 10, Nnodes, Node_cross2)
+saveas(gcf, strcat('./results/FA_profile_',tract_name2,'.fig'));
+saveas(gcf, strcat('./results/FA_profile_',tract_name2,'.pdf'));
+saveas(gcf, strcat('./results/FA_profile_',tract_name2,'.png'));
 
+FA_profiles_data.tract_name1 = tract_name1;
+FA_profiles_data.tract_name2 = tract_name2;
+FA_profiles_data.tract1 = FA_tract1;
+FA_profiles_data.tract2 = FA_tract2;
+FA_profiles_data.tract1_12 = FA_tract1_12;
+FA_profiles_data.tract2_12 = FA_tract2_12;
+FA_profiles_data.tract1_orig = FA_tract1_orig;
+FA_profiles_data.tract2_orig = FA_tract2_orig;
+FA_profiles_data.tract1_pred = FA_tract1_pred;
+FA_profiles_data.tract2_pred = FA_tract2_pred;
+
+save('./results/FA_profiles_data.mat', 'FA_profiles_data')
 end
 
 function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross)
@@ -236,7 +255,7 @@ if ~isempty(FA_tract1_orig)
     h3 = shadedErrorBar(1:Nnodes,nanmean(FA_tract1_orig,1),s*nanstd(FA_tract1_orig)/sqrt(N),'lineprops',clrorig);
 end
 if ~isempty(FA_pred)
-    h3 = shadedErrorBar(1:Nnodes,nanmean(FA_pred,1),s*nanstd(FA_pred)/sqrt(N),'lineprops',clrp);
+    h4 = shadedErrorBar(1:Nnodes,nanmean(FA_pred,1),s*nanstd(FA_pred)/sqrt(N),'lineprops',clrp);
 end
 
 %
@@ -246,7 +265,7 @@ if ~isempty(FA_tract1)&&isempty(FA_tract1_orig)
 elseif isempty(FA_tract1)
    legend([h2.mainLine, h3.mainLine],'Pred full','Orig')
 else
-   legend([h1.mainLine, h2.mainLine, h3.mainLine],tract_name1,strcat(tract_name1,'+',tract_name2),'Original')
+   legend([h1.mainLine, h2.mainLine, h3.mainLine, h4.mainLine],tract_name1,strcat(tract_name1,'+',tract_name2),'Original','Pred Full')
 end
 
 
