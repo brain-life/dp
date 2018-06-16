@@ -32,6 +32,7 @@ info.input.classification_path = config.afq;
 info.input.optimal = config.optimal;
 info.output = struct;
 info.output.niftis = 'output';
+info.output.results_root = 'output';
 bvals = dlmread(bvalsFile);
 
 data_out_path = fullfile(info.output.niftis);
