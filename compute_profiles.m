@@ -8,8 +8,11 @@ if ~isdeployed
     %addpath(genpath('/home/hayashis/git/encode'));
     addpath(genpath('./encode'));
     addpath(genpath('/home/hayashis/git/vistasoft'));
-    addpath(genpath('/N/dc2/projects/lifebid/code/mba/'))
+    addpath(genpath('/home/hayashis/git/mba'))
     addpath(genpath('/home/hayashis/git/jsonlab'));
+
+    %needed for cesar
+    addpath(genpath('/N/dc2/projects/lifebid/code/mba/'))
 end
 
 %# function sptensor
