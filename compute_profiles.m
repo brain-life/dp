@@ -75,7 +75,7 @@ else
 end
 
 disp('3- Compute and plot profiles');
-info.output.results_root = 'output';
+mkdir('results');
 Gen_tract_profiles_pair(info, tract1, tract2, 10)
 
 end

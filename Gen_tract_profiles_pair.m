@@ -66,7 +66,7 @@ function [] = Gen_tract_profiles_pair(info, tract_name1, tract_name2, std_parame
 
 %addpath(genpath(info.repo.mba));
 
-dataPath = info.output.results_root;
+dataPath = info.output.niftis;
 
 %% load fe_structure
 %FileName = deblank(ls(fullfile(dataPath,strcat('fe_*.mat'))));
