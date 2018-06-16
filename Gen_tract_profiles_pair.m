@@ -140,7 +140,7 @@ famp12 = niftiRead(FAfile12);
 [FA_tract1_12, ~]= Compute_FA_AlongFG(fgcx1, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on original
-FAfileOrig = deblank(ls(char(fullfile(dataPath,strcat('FA_','original.nii.gz')))));
+FAfileOrig = deblank(ls(char(fullfile(dataPath,'FA_original.nii.gz'))));
 fampOrig = niftiRead(FAfileOrig);
 [FA_tract1_orig, ~]= Compute_FA_AlongFG(fgcx1, fampOrig, [], [], Nnodes);
 [FA_tract2_orig, ~]= Compute_FA_AlongFG(fgcx2, fampOrig, [], [], Nnodes);
@@ -154,7 +154,7 @@ famp2 = niftiRead(FAfile2);
 [FA_tract2_12, ~]= Compute_FA_AlongFG(fgcx2, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on prediction
-FAfilePred = deblank(ls(char(fullfile(dataPath,strcat('FA_','pred_full.nii.gz')))));
+FAfilePred = deblank(ls(char(fullfile(dataPath,'FA_pred_full.nii.gz'))));
 fampPred = niftiRead(FAfilePred);
 [FA_tract1_pred, ~]= Compute_FA_AlongFG(fgcx1, fampPred, [], [], Nnodes);
 [FA_tract2_pred, ~]= Compute_FA_AlongFG(fgcx2, fampPred, [], [], Nnodes);
