@@ -35,6 +35,7 @@ tract1 = 'CST_L';
 tract2 = 'SLF_L';
 
 disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST_L and SLF_L')
+mkdir('output');
 other_tracts = {'ARC_L','Thal_Rad_L'};
 Gen_niftis_crossing_tracts(info, tract1, tract2, other_tracts)
 
@@ -44,7 +45,6 @@ Nfiles = size(listing,1);
 bs.n = 500;
 [bs.permuteMatrix, ~, ~] = dtiBootGetPermMatrix(dlmread(bvecsFile),dlmread(bvalsFile));
 bs.showProgress = false;
-
 ni = niftiRead(aligned_dwi);
 for n=1:Nfiles
     dwRawAligned = fullfile('output',listing(n).name);
