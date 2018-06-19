@@ -129,24 +129,24 @@ fgex2 = MyfgCreate_img('name', fgName2, 'colorRgb', [0 0 1], 'fibers', fgTract2)
 fgcx2 = mbaComputeFibersOutliers(fgex2, std_parameter, std_parameter, 100, 'mean');
 
 %% Compute profile tract1 using FA based on  tract 1 ONLY
-FAfile1 = deblank(ls(char(fullfile(dataPath,strcat('FA_',tract_name1,'.nii.gz')))));
+FAfile1 = deblank(ls(char(fullfile(dataPath,'FAs',strcat('FA_',tract_name1,'.nii.gz')))));
 famp1 = niftiRead(FAfile1);
 [FA_tract1, SuperFiber1, ~, ~] = Compute_FA_AlongFG(fgcx1, famp1, [], [], Nnodes);
 
 %% Compute profile tract1 using FA based on tract1 + tract2 + other tracts
 FileName = strcat(tract_name1, '_',tract_name2);
-FAfile12 = deblank(ls(char(fullfile(dataPath,strcat('FA_',FileName,'_new.nii.gz')))));
+FAfile12 = deblank(ls(char(fullfile(dataPath,'FAs',strcat('FA_',FileName,'_new.nii.gz')))));
 famp12 = niftiRead(FAfile12);
 [FA_tract1_12, ~]= Compute_FA_AlongFG(fgcx1, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on original
-FAfileOrig = deblank(ls(char(fullfile(dataPath,'FA_original.nii.gz'))));
+FAfileOrig = deblank(ls(char(fullfile(dataPath,'FAs','FA_original.nii.gz'))));
 fampOrig = niftiRead(FAfileOrig);
 [FA_tract1_orig, ~]= Compute_FA_AlongFG(fgcx1, fampOrig, [], [], Nnodes);
 [FA_tract2_orig, ~]= Compute_FA_AlongFG(fgcx2, fampOrig, [], [], Nnodes);
 
 %% Compute profile tract2 using FA based on  tract 2 ONLY
-FAfile2 = deblank(ls(char(fullfile(dataPath,strcat('FA_',tract_name2,'.nii.gz')))));
+FAfile2 = deblank(ls(char(fullfile(dataPath,'FAs',strcat('FA_',tract_name2,'.nii.gz')))));
 famp2 = niftiRead(FAfile2);
 [FA_tract2, SuperFiber2, ~, ~] = Compute_FA_AlongFG(fgcx2, famp2, [], [], Nnodes);
 
@@ -154,7 +154,7 @@ famp2 = niftiRead(FAfile2);
 [FA_tract2_12, ~]= Compute_FA_AlongFG(fgcx2, famp12, [], [], Nnodes);
 
 %% Compute tract profile using FA based on prediction
-FAfilePred = deblank(ls(char(fullfile(dataPath,'FA_pred_full.nii.gz'))));
+FAfilePred = deblank(ls(char(fullfile(dataPath,'FAs','FA_pred_full.nii.gz'))));
 fampPred = niftiRead(FAfilePred);
 [FA_tract1_pred, ~]= Compute_FA_AlongFG(fgcx1, fampPred, [], [], Nnodes);
 [FA_tract2_pred, ~]= Compute_FA_AlongFG(fgcx2, fampPred, [], [], Nnodes);

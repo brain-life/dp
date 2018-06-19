@@ -46,6 +46,7 @@ bs.n = 500;
 [bs.permuteMatrix, ~, ~] = dtiBootGetPermMatrix(dlmread(bvecsFile),dlmread(bvalsFile));
 bs.showProgress = false;
 ni = niftiRead(aligned_dwi);
+mkdir('output/FAs')
 for n=1:Nfiles
     dwRawAligned = fullfile('output',listing(n).name);
     data_out_path = fullfile(info.output.niftis);
@@ -56,7 +57,7 @@ for n=1:Nfiles
     val1 = dtiComputeFA(eigVal);
 
     %% Generate nifti with FA values
-    name = fullfile('output',strcat('FA_',listing(n).name));
+    name = fullfile('output/FAs',strcat('FA_',listing(n).name));
     
     ni_out = ni;
     ni_out.fname = name;

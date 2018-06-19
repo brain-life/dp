@@ -97,12 +97,12 @@ dwiFile = info.input.dwi_path;
 
 %% Generate nifti for original data 
 ni = niftiRead(dwiFile);
-fName = fullfile(dataOutputPath,strcat('FA_original.nii.gz'));
+fName = fullfile(dataOutputPath,strcat('original.nii.gz'));
 niftiWrite(ni,fName);
 
 %% Generate nifti using the predicted diffusion signal based on the model fit to the original data
 % fe is already loaded
-name = fullfile(dataOutputPath,strcat('FA_pred_full.nii.gz'));
+name = fullfile(dataOutputPath,strcat('pred_full.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 %dwi = feGet(fe, 'dwi'); % load dwi structure
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
