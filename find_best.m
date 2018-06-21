@@ -148,6 +148,7 @@ out = struct;
 out.data = struct;
 out.layout = struct;
 out.type = 'plotly';
+out.name = plotTitle;
 
 out.data.x = xs;
 out.data.y = ys;
@@ -158,7 +159,7 @@ out.data.marker.symbol = 'circle-open';
 out.data.marker.size = 8;
 out.data = {out.data};
 
-out.layout.title = plotTitle;
+%out.layout.title = plotTitle;
 
 out.layout.xaxis = struct;
 out.layout.xaxis.title = xaxisTitle;
