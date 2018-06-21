@@ -6,8 +6,8 @@ addpath(genpath('/home/hayashis/git/vistasoft'));
 addpath(genpath('/home/hayashis/git/mba'))
 addpath(genpath('/home/hayashis/git/jsonlab'));
 
-%mcc -m -R -nodisplay -d compiled fit_model
-%mcc -m -R -nodisplay -d compiled find_best
+mcc -m -R -nodisplay -d compiled fit_model
+mcc -m -R -nodisplay -d compiled find_best
 mcc -m -R -nodisplay -d compiled compute_profiles
 exit
 END
