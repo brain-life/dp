@@ -2,6 +2,16 @@
     "dtiinit": "/N/u/hayashis/testdata/dp/dtiinit/.",
     "optimal": "/N/u/hayashis/testdata/dp/fe_optimal.mat",
     "afq": "/N/u/hayashis/testdata/dp/afq/output.mat",
-    "command": "profile"
+    "command": "profile",
+    "m": 0.5,
+    "p": 0.5,
+    "n": 1,
+    "L": 45,
+    "a_min": 0.0,
+    "a_max": 10.0,
+    "l1_min": 1.0,
+    "l1_max": 8.0,
+    "l2_min": 0.0,
+    "l2_max": 0.8
 }
 
