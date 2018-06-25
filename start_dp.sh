@@ -9,15 +9,15 @@ rm -f jobid.best
 
 a_min=$(jq -r .a_min config.json)
 a_max=$(jq -r .a_max config.json)
-a_step=$(echo "scale=3;($a_max-$a_min)/7" | bc)
+a_step=$(jq -n "($a_max-$a_min)/7")
 
 l1_min=$(jq -r .l1_min config.json)
 l1_max=$(jq -r .l1_max config.json)
-l1_step=$(echo "scale=3;($l1_max-$l1_min)/7" | bc)
+l1_step=$(jq -n "($l1_max-$l1_min)/7")
 
 l2_min=$(jq -r .l2_min config.json)
 l2_max=$(jq -r .l2_max config.json)
-l2_step=$(echo "scale=3;($l2_max-$l2_min)/7" | bc)
+l2_step=$(jq -n "($l2_max-$l2_min)/7")
 
 echo "generating parameter list"
 true > params.list
