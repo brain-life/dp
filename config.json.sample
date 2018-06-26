@@ -3,6 +3,7 @@
     "optimal": "/N/u/hayashis/testdata/dp/fe_optimal.mat",
     "afq": "/N/u/hayashis/testdata/dp/afq/output.mat",
     "command": "profile",
+    "workers": 8,
     "m": 0.5,
     "p": 0.5,
     "n": 1,
