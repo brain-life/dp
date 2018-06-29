@@ -9,7 +9,19 @@ if [ $command == "profile" ]; then
 
     time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/compute_profiles
     if [ ! -f output/dt6.mat ]; then
-        echo "failed to product output"
+        echo "failed to produce output"
         exit 1
     fi
 fi
+
+if [ $command == "remove_tracts_from_prediction" ]; then
+
+    #rm -rf results output
+
+    time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/remove_tracts_from_prediction
+    if [ ! -f output/remove_*.nii.gz ]; then
+        echo "failed to produce output"
+        exit 1
+    fi
+fi
+

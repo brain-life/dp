@@ -18,9 +18,10 @@ addpath(genpath('/home/hayashis/git/vistasoft'));
 addpath(genpath('/home/hayashis/git/mba'))
 addpath(genpath('/home/hayashis/git/jsonlab'));
 
-mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled fit_model
-mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled find_best
-mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled compute_profiles
+%mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled fit_model
+%mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled find_best
+%mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled compute_profiles
+mcc -m -R -nodisplay -a /home/hayashis/git/vistasoft/mrAnatomy/Segment -d compiled remove_tracts_from_prediction
 exit
 END
 matlab -nodisplay -nosplash -r build && rm build.m
