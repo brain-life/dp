@@ -7,9 +7,15 @@ function Dict = BuildDictionaries(Nphi,Ntheta,bvecs,bvals,lambda_1,lambda_2)
 % Norient = (Nphi-2)(Ntheta-2) + 1. The first column in orient is a vector
 % pointing out to the zenith (spin-up) the rest of columns are vectors
 % covering the half sphere.
+%
+% Copyright 
+%   Cesar Caiafa, Soichi Hayashi and Franco Pestilli
+% 
+% Indiana University 2018
+% brainlife.io
+%
+% CC-BY 3.0 License CREDIT MUST BE GIVEN FOR ALL REUSE.
 
-%  Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
-%  email: pestillifranco@gmail.com and ccaiafa@gmail.com
 
 tic
 fprintf(['\n[%s] Computing demeaned and non-demeaned difussivities dictionaries in a (',num2str(Nphi),'x',num2str(Ntheta),')-grid', ' ...'],mfilename); 
