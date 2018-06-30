@@ -29,8 +29,7 @@ info.input = struct;
 info.input.dwi_path = aligned_dwi;
 info.input.classification_path = config.afq;
 info.input.optimal = config.optimal;
-info.output = struct;
-info.output.niftis = 'output';
+info.input.profile = config.profile;
 % Tracts to remove
 tracts = {'ARC_L', 'SLF_L', 'ARC_R', 'SLF_R'} ;
 

@@ -81,7 +81,7 @@ else
 end
 
 %% Set the Path for the output
-dataOutputPath = info.output.niftis;
+%dataOutputPath = info.output.niftis;
 
 %% load fe structure
 FileName = info.input.optimal;
@@ -90,12 +90,12 @@ dwiFile = info.input.dwi_path
 
 %% Generate nifti for original data 
 ni = niftiRead(dwiFile);
-fName = fullfile(dataOutputPath,strcat('original.nii.gz'));
-niftiWrite(ni,fName);
+%fName = fullfile(info.input.profile,strcat('original.nii.gz'));
+%niftiWrite(ni,fName);
 
 %% Generate nifti using the predicted diffusion signal based on the model fit to the original data
 % fe is already loaded
-name = fullfile(dataOutputPath,strcat('pred_full.nii.gz'));
+name = fullfile(info.input.profile,strcat('pred_full.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 %dwi = feGet(fe, 'dwi'); % load dwi structure
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
@@ -106,7 +106,7 @@ Generate_nifti(ni,name,coords,dwi,diff_signal);
 load(info.input.classification_path);
 
 %% Generate niftis for all tracts except the ones in "tracts"
-name = fullfile(dataOutputPath,strcat('remove_',tracts_names,'.nii.gz'));
+name = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
