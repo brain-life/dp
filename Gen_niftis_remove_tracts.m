@@ -110,7 +110,7 @@ name = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 dwi = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
-for i=1:size(fascicles, 2)
+for i=1:size(classification.names, 2)
     if ~ismember(i,tracts_numbers) 
         fibers = [fibers ;find(classification.index == other_tract_number(i))];
     end
