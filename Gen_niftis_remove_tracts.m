@@ -1,4 +1,11 @@
 function [] = Gen_niftis_remove_tracts(info, tracts)
+% Generate a NIFTI-1 file from a full-signal prediction after removing
+% the streamlinees associated with one or more tracts.
+%
+% INPUTS:
+%        info   - DP project "info" file
+%        tracts - 
+%
 %% INPUT: two crossing tracts (AFQ)
 %%  Number    Name            Full Name
 %   1         Thal_Rad_L      Left Thalamic Radiation
@@ -62,7 +69,14 @@ function [] = Gen_niftis_remove_tracts(info, tracts)
 %   36      SLF3_R            Right SLF3
 %   37      ILF_L             Left ILF
 %   38      ILF_R             Right ILF
-
+%
+% Copyright 
+%   Cesar Caiafa, Soichi Hayashi and Franco Pestilli
+% 
+% Indiana University 2018
+% brainlife.io
+%
+% CC-BY 3.0 License CREDIT MUST BE GIVEN FOR ALL REUSE.
 
 
 %% Get tract numbers
@@ -95,10 +109,10 @@ ni = niftiRead(dwiFile);
 
 %% Generate nifti using the predicted diffusion signal based on the model fit to the original data
 % fe is already loaded
-name = fullfile(info.input.profile,strcat('pred_full.nii.gz'));
+name   = fullfile(info.input.profile,strcat('pred_full.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-%dwi = feGet(fe, 'dwi'); % load dwi structure
-dwi = dwiLoad(info.input.dwi_path); % load dwi structure
+%dwi   = feGet(fe, 'dwi'); % load dwi structure
+dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
 diff_signal = feGet(fe,'pred full');
 Generate_nifti(ni,name,coords,dwi,diff_signal);
 
@@ -106,11 +120,11 @@ Generate_nifti(ni,name,coords,dwi,diff_signal);
 load(info.input.classification_path);
 
 %% Generate niftis for all tracts except the ones in "tracts"
-name = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
+name   = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-dwi = dwiLoad(info.input.dwi_path); % load dwi structure
+dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
-for i=1:size(classification.names, 2)
+for i  = 1:size(classification.names, 2)
     if ~ismember(i,tracts_numbers) 
         fibers = [fibers ;find(classification.index == other_tract_number(i))];
     end
@@ -121,8 +135,12 @@ Generate_nifti(ni,name,coords,dwi,diff_signal);
 
 end
 
+%------------------------------------------------------------%
 function [] = Generate_nifti(ni_in,name,coords,dwi,dwisignal)
-
+%
+% Local helpeer function to generate NIFTI-1 files
+%
+% 
 ni_out = ni_in;
 ni_out.fname = name;
 
