@@ -25,8 +25,16 @@ function [FA_profile, SuperFiber, fgClipped, fgResampled] = ...
 %                    numberOfNodes and each fiber has been reoriented to 
 %                    start and end in a consitent location  
 %
-% Adapted from function dtiComputeDiffusionPropertiesAlongFG() in VISTALAB
-% Cesar Caiafa, Feb 2017.
+% Adapted from function dtiComputeDiffusionPropertiesAlongFG() in VISTASOFT
+% AUTHOR Cesar Caiafa, Feb 2017. 
+%
+% Copyright 
+%   Cesar Caiafa, Soichi Hayashi and Franco Pestilli
+% 
+% Indiana University 2018
+% brainlife.io
+%
+% CC-BY 3.0 License CREDIT MUST BE GIVEN FOR ALL REUSE.
 
 % If two rois are passed in clip the fiber group to the portion that spans
 % between the ROIs
