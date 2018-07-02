@@ -19,8 +19,8 @@ if [ $command == "remove_tracts_from_prediction" ]; then
     #rm -rf results output
 
     time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/remove_tracts_from_prediction
-    if [ ! -f output/remove_*.nii.gz ]; then
-        echo "failed to produce output"
+    if [ ! -f dwi.nii.gz ]; then
+        echo "failed to produce dwi output"
         exit 1
     fi
 fi
