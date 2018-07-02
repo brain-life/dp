@@ -126,7 +126,7 @@ dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
 for i  = 1:size(classification.names, 2)
     if ~ismember(i,tracts_numbers) 
-        fibers = [fibers ;find(classification.index == other_tract_number(i))];
+        fibers = [fibers ;find(classification.index == i)];
     end
 end
 diff_signal = feGet(fe,'pred tract',fibers);
