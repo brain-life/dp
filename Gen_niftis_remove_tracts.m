@@ -120,7 +120,6 @@ Generate_nifti(ni,name,coords,dwi,diff_signal);
 load(info.input.classification_path);
 
 %% Generate niftis for all tracts except the ones in "tracts"
-name   = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
 coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
@@ -131,6 +130,9 @@ for i  = 1:size(classification.names, 2)
 end
 diff_signal = feGet(fe,'pred tract',fibers);
 diff_signal(diff_signal==0) = NaN;
+
+mkdir('output');
+name = fullfile('output',strcat('remove_',tracts_names,'.nii.gz'));
 Generate_nifti(ni,name,coords,dwi,diff_signal);
 
 end
