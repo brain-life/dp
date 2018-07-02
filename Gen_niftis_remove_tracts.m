@@ -112,8 +112,11 @@ ni = niftiRead(dwiFile);
 %name   = fullfile(info.input.profile,strcat('pred_full.nii.gz'));
 %coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
 %dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
-%diff_signal = feGet(fe,'pred full');
+%diff_signal_full = feGet(fe,'pred full');
 %Generate_nifti(ni,coords,dwi,diff_signal);
+
+%% Load the original (full) diffusion signal.
+diff_signal_full = feGet(fe,'dSig full by Voxel');
 
 %% Load classification file
 load(info.input.classification_path);
@@ -123,13 +126,17 @@ coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the 
 dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
 fibers = [];
 for i  = 1:size(classification.names, 2)
-    if ~ismember(i,tracts_numbers) 
+    if ismember(i,tracts_numbers) 
         fibers = [fibers ;find(classification.index == i)];
     end
 end
 diff_signal = feGet(fe,'pred tract',fibers);
-diff_signal(diff_signal==0) = NaN;
+%diff_signal(diff_signal==0) = NaN;
 
+% subtract the diff_signal predicted with the tracts only from the full signal. 
+diff_signal = diff_signal_full - diff_signal;
+
+% write to disk the nifti with the final signal prediction
 Generate_nifti(ni,coords,dwi,diff_signal);
 
 end
