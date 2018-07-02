@@ -23,6 +23,9 @@ aligned_dwi = fullfile(config.dtiinit, dt6.files.alignedDwRaw)
 bvecsFile = strcat(aligned_dwi(1:end-6),'bvecs');
 bvalsFile = strcat(aligned_dwi(1:end-6),'bvals');    
 
+copyfile(bvecsFile, 'dwi.bvecs');
+copyfile(bvalsFile, 'dwi.bvals');
+
 info = struct;
 info.segmentation_type = 'AFQ'; % In the future we could use a more complete segmentation (more than 20 major tracts)
 info.input = struct;

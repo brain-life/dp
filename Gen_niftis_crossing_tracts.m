@@ -95,6 +95,7 @@ dwiFile = info.input.dwi_path;
 %bvecsFile = strcat(dwiFile(1:end-6),'bvecs');
 %bvalsFile = strcat(dwiFile(1:end-6),'bvals');
 
+%% TODO - is this necessary?
 %% Generate nifti for original data 
 ni = niftiRead(dwiFile);
 fName = fullfile(dataOutputPath,strcat('original.nii.gz'));
