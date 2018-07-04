@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N diff_pred-find_best
-#PBS -l nodes=1,ppn=4,walltime=03:00:00
+#PBS -l nodes=1:ppn=4,vmem=32g,walltime=03:00:00
 #PBS -V
 
 #export PATH=.:$PATH

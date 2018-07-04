@@ -11,3 +11,6 @@ rm optimal.mat
 rm info.mat
 rm jobid.*
 rm jobstate
+rm -rf logs*
+rm -rf results
+rm failed
