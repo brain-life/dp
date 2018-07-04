@@ -3,9 +3,6 @@
 #PBS -l nodes=1:ppn=8,vmem=16g,walltime=04:30:00
 #PBS -V
 
-#echo $PWD
-#echo $PBS_O_WORKDIR
-
 [ $PBS_ARRAYID ] && TASK_ID=$PBS_ARRAYID
 [ $SLURM_ARRAY_TASK_ID ] && TASK_ID=$SLURM_ARRAY_TASK_ID
 
@@ -32,7 +29,8 @@ fi
 
 echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
 #time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
-time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a bash -c "MAXMEM=16000000 ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2"
+export MAXMEM=16000000
+time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
 
 #an attempt to make sure parpool clean up itself
 sleep 10
