@@ -102,19 +102,6 @@ FileName = info.input.optimal;
 load(FileName);
 dwiFile = info.input.dwi_path
 
-%% Generate nifti for original data 
-ni = niftiRead(dwiFile);
-%fName = fullfile(info.input.profile,strcat('original.nii.gz'));
-%niftiWrite(ni,fName);
-
-%% Generate nifti using the predicted diffusion signal based on the model fit to the original data
-% fe is already loaded
-%name   = fullfile(info.input.profile,strcat('pred_full.nii.gz'));
-%coords = fe.roi.coords; % Get the coordinates of the nodes in each voxel of the connectome
-%dwi    = dwiLoad(info.input.dwi_path); % load dwi structure
-%diff_signal_full = feGet(fe,'pred full');
-%Generate_nifti(ni,coords,dwi,diff_signal);
-
 %% Load the original (full) diffusion signal.
 diff_signal_full = feGet(fe,'dSig full by Voxel');
 
@@ -138,18 +125,18 @@ diff_signal = diff_signal_full' - diff_signal;
 diff_signal(diff_signal<0) = 0;
 
 % write to disk the nifti with the final signal prediction
-Generate_nifti(ni,strcat(tracts_names,'_removed'),coords,dwi,diff_signal);
+ni = niftiRead(dwiFile);
+Generate_nifti(ni,coords,dwi,diff_signal);
 
 end
 
 %------------------------------------------------------------%
-function [] = Generate_nifti(ni_in,name,coords,dwi,dwisignal)
+function [] = Generate_nifti(ni_in,coords,dwi,dwisignal)
 %
 % Local helpeer function to generate NIFTI-1 files
 %
 % 
 ni_out = ni_in;
-%ni_out.fname = name;
 
 bvals = dwi.bvals;
 indexes = find(bvals~=0);
@@ -169,6 +156,6 @@ ni_out.data = feReplaceImageValues(ni_out.data,b0_data,coords,b0indexes);
 ni_out.data = feReplaceImageValues(ni_out.data,dwisignal,coords,indexes);
 
 % save nifti to disk
-niftiWrite(ni_out,strcat(name,'dwi.nii.gz'));
+niftiWrite(ni_out,'dwi.nii.gz');
 
 end
