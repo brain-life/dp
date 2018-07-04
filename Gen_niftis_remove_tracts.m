@@ -134,15 +134,16 @@ diff_signal = feGet(fe,'pred tract',fibers);
 %diff_signal(diff_signal==0) = NaN;
 
 % subtract the diff_signal predicted with the tracts only from the full signal. 
-diff_signal = diff_signal_full - diff_signal;
+diff_signal = diff_signal_full' - diff_signal;
+diff_signal(diff_signal<0) = 0;
 
 % write to disk the nifti with the final signal prediction
-Generate_nifti(ni,coords,dwi,diff_signal);
+Generate_nifti(ni,strcat(tracts_names,'_removed'),coords,dwi,diff_signal);
 
 end
 
 %------------------------------------------------------------%
-function [] = Generate_nifti(ni_in,coords,dwi,dwisignal)
+function [] = Generate_nifti(ni_in,name,coords,dwi,dwisignal)
 %
 % Local helpeer function to generate NIFTI-1 files
 %
@@ -168,6 +169,6 @@ ni_out.data = feReplaceImageValues(ni_out.data,b0_data,coords,b0indexes);
 ni_out.data = feReplaceImageValues(ni_out.data,dwisignal,coords,indexes);
 
 % save nifti to disk
-niftiWrite(ni_out,'dwi.nii.gz');
+niftiWrite(ni_out,strcat(name,'dwi.nii.gz'));
 
 end
