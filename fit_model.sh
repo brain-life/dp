@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N dp-fit-model
-#PBS -l nodes=1:ppn=8,vmem=40g,walltime=04:30:00
+#PBS -l nodes=1:ppn=8,vmem=16g,walltime=04:30:00
 #PBS -V
 
 #echo $PWD
@@ -32,7 +32,9 @@ fi
 
 echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
 #time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
-time singularity exec -e docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
+#export SINGULARITYENV_MAXMEM=16000000
+export MAXMEM=16000000
+time singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
 
 #an attempt to make sure parpool clean up itself
 sleep 10
