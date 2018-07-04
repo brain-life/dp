@@ -32,7 +32,7 @@ echo "number of params $(wc -l params.list)"
 
 #archive old logs
 if [ -d logs ]; then
-    mv logs logs.$(date +%F)
+    mv logs logs.$(date +%F).$RANDOM
 fi
 
 #create new logs
