@@ -1,14 +1,12 @@
 #!/bin/bash
 
-if [ `which scancel` ]; then
+if hash scancel 2>/dev/null; then
     scancel `cat jobid.fit`
     scancel `cat jobid.best`
 fi
-if [ `which qdel` ]; then
-    echo "qdel" 
-    cat jobid.fit
-    cat jobid.best
+
+if hash qdel 2>/dev/null; then
     qdel `cat jobid.fit`
-    sleep 5
-    qdel `cat jobid.best`
+    sleep 3
+    qdel `at jobid.best`
 fi
