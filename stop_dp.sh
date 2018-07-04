@@ -8,5 +8,5 @@ fi
 if hash qdel 2>/dev/null; then
     qdel `cat jobid.fit`
     sleep 3
-    qdel `at jobid.best`
+    qdel `cat jobid.best`
 fi

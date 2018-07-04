@@ -34,8 +34,8 @@ if hash qstat 2>/dev/null; then
     qstat -f -t $jobid_fit | grep "job_state = R" > jobstate
     qstat -f $jobid_best | grep "job_state = R" >> jobstate
     running_count=$(grep R jobstate | wc -l)
-    qstat -f -t $jobid_fit | grep "exit_status = 1" > failed
-    qstat -f $jobid_best | grep "exit_status = 1" >> failed
+    qstat -f -t $jobid_fit | grep exit_status | grep -v " 0" > failed
+    qstat -f $jobid_best | grep exit_status | grep -v " 0" >> failed
     failed_count=$(cat failed | wc -l)
 fi
 completed_count=$(ls results/*.mat 2>/dev/null | wc -l || true)
@@ -43,42 +43,42 @@ completed_count=$(ls results/*.mat 2>/dev/null | wc -l || true)
 #did it fail?
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. too strict?)
-	./stop.sh
-    grep FAILED jobstate
+	./stop_dp.sh
+    echo "job failed.. terminating"
 	exit 2
 fi
  
 #did it finish?
-[ `hash scontrol 2>/dev/null` ] && scontrol show job $jobid_best | grep "COMPLETED" > /dev/null
+hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "COMPLETED" > /dev/null
 if [ $? -eq 0 ]; then
     echo "finished!"
     exit 1
 fi
-[ `hash qstat 2>/dev/null` ] && qstat -f $jobid_best | grep "exit_status = 0" > /dev/null
+hash qstat 2>/dev/null && qstat -f $jobid_best | grep "exit_status = 0" > /dev/null
 if [ $? -eq 0 ]; then
     echo "finished!"
     exit 1
 fi
 
 #was it canceled?
-[ `hash scontrol 2>/dev/null` ] && scontrol show job $jobid_best | grep "CANCELLED" > /dev/null
+hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "CANCELLED" > /dev/null
 if [ $? -eq 0 ]; then
     echo "someone canceled!"
     exit 2
 fi
-[ `hash qstat 2>/dev/null` ] && qstat -f $jobid_best | grep "job_state = C" > /dev/null
+hash qstat 2>/dev/null && qstat -f $jobid_best | grep "job_state = C" > /dev/null
 if [ $? -eq 0 ]; then
     echo "someone canceled!"
     exit 2
 fi
 
 #is best running?
-[ `hash scontrol 2>/dev/null` ] && scontrol show job $jobid_best | grep "RUNNING" > /dev/null
+hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "RUNNING" > /dev/null
 if [ $? -eq 0 ]; then
     echo "finding best - creating final fe"
     exit 0
 fi
-[ `hash qstat 2>/dev/null` ] && qstat -f $jobid_best | grep "job_state = R" > /dev/null
+hash qstat 2>/dev/null && qstat -f $jobid_best | grep "job_state = R" > /dev/null
 if [ $? -eq 0 ]; then
     echo "finding best - creating final fe"
     exit 0
@@ -92,12 +92,13 @@ if [ ! "$running_count" -eq "0" ]; then
 fi
 
 #maybe they are still pending (for staggering)
-[ `hash scontrol 2>/dev/null` ] && scontrol show job $jobid_fit | grep "PENDING" > /dev/null
+hash scontrol 2>/dev/null && scontrol show job $jobid_fit | grep "PENDING" > /dev/null
 if [ $? -eq 0 ]; then
     echo "waiting for other jobs (or stagger)"
     exit 0
 fi
-[ `hash qstat 2>/dev/null` ] && qstat -f $jobid_fit | grep "job_state = Q" > /dev/null
+
+hash qstat 2>/dev/null && qstat -f $jobid_fit | grep "job_state = Q" > /dev/null
 if [ $? -eq 0 ]; then
     echo "waiting to start"
     exit 0
