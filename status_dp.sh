@@ -31,9 +31,13 @@ if hash scontrol 2>/dev/null; then
 fi
 
 if hash qstat 2>/dev/null; then
-    qstat -f -t $jobid_fit | grep "job_state = R" > jobstate
-    qstat -f $jobid_best | grep "job_state = R" >> jobstate
-    running_count=$(grep R jobstate | wc -l)
+    qstat -f -t $jobid_fit | grep job_state > jobstate
+    if [ ! $? -eq 0 ]; then
+        echo "job removed?"
+        exit 2
+    fi
+    qstat -f $jobid_best | grep job_state >> jobstate
+    running_count=$(grep "job_state = R" jobstate | wc -l)
     qstat -f -t $jobid_fit | grep exit_status | grep -v " 0" > failed
     qstat -f $jobid_best | grep exit_status | grep -v " 0" >> failed
     failed_count=$(cat failed | wc -l)
