@@ -66,12 +66,10 @@ fi
 
 if hash qsub 2>/dev/null; then
     echo "submitting fit_model array(1-$params)"
-    #echo "qsub -t 1-$params -o logs/fit.log -e logs/fit.err fit_model.sh"
-    fit=$(qsub -d $PWD -t 1-$params -o logs/fit.log -e logs/fit.err fit_model.sh)
+    fit=$(qsub -d $PWD -t 1-$params -l vmem=40g -o logs/fit.log -e logs/fit.err fit_model.sh)
     echo $fit > jobid.fit
 
     echo "submitting find_best"
-    #echo "qsub -W depend=afterok:$fit -o logs/best.log -e logs/best.err find_best.sh"
-    best=$(qsub -d $PWD -W depend=afterok:$fit -o logs/best.log -e logs/best.err find_best.sh)
+    best=$(qsub -d $PWD -W depend=afterok:$fit -l vmem=32g -o logs/best.log -e logs/best.err find_best.sh)
     echo $best > jobid.best
 fi
