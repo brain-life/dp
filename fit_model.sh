@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N dp-fit-model
-#PBS -l nodes=1:ppn=8,vmem=16g,walltime=04:30:00
+#PBS -l nodes=1:ppn=8,vmem=40g,walltime=04:30:00
 #PBS -V
 
 [ $PBS_ARRAYID ] && TASK_ID=$PBS_ARRAYID
