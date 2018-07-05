@@ -1,7 +1,9 @@
 #!/bin/bash
-#PBS -N dp-fit-model
-#PBS -l nodes=1:ppn=8,walltime=06:00:00
-#PBS -V
+
+#this breaks slurm.. not sure what
+##PBS -N dp-fit-model
+##PBS -l nodes=1:ppn=8,walltime=06:00:00
+##PBS -V
 
 [ $PBS_ARRAYID ] && TASK_ID=$PBS_ARRAYID
 [ $SLURM_ARRAY_TASK_ID ] && TASK_ID=$SLURM_ARRAY_TASK_ID
