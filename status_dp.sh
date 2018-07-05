@@ -43,6 +43,8 @@ completed_count=$(ls results/*.mat 2>/dev/null | wc -l || true)
 #did it fail?
 if [ $failed_count != "0" ]; then
 	#if there is any job that's failed, mark as failed (TODO.. too strict?)
+    qstat -f -t $jobid_fit > fail.fit.debug
+    qstat -f $jobid_best > fail.best.debug
 	./stop_dp.sh
     echo "job failed.. terminating"
 	exit 2
