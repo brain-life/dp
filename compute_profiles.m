@@ -31,13 +31,17 @@ info.input.classification_path = config.afq;
 info.input.optimal = config.optimal;
 info.output = struct;
 info.output.niftis = 'output';
-tract1 = 'CST_L';
-tract2 = 'SLF_L';
+tract1_L = 'CST_L';
+tract2_L = 'SLF_L';
+tract1_R = 'CST_R';
+tract2_R = 'SLF_R';
 
 disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST_L and SLF_L')
 mkdir('output');
-other_tracts = {'ARC_L','Thal_Rad_L'};
-Gen_niftis_crossing_tracts(info, tract1, tract2, other_tracts)
+other_tracts_L = {'ARC_L','Thal_Rad_L'};
+Gen_niftis_crossing_tracts(info, tract1_L, tract2_L, other_tracts_L)
+other_tracts_R = {'ARC_R','Thal_Rad_R'};
+Gen_niftis_crossing_tracts(info, tract1_R, tract2_R, other_tracts_R)
 
 disp('step 2 - Use VITASOFT to compute FA on predictions')
 listing = dir(strcat('output/*.nii.gz'));
@@ -68,6 +72,7 @@ end
 
 disp('3- Compute and plot profiles');
 mkdir('results');
-Gen_tract_profiles_pair(info, tract1, tract2, 10)
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10)
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10)
 
 end
