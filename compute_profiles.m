@@ -31,15 +31,19 @@ info.input.classification_path = config.afq;
 info.input.optimal = config.optimal;
 info.output = struct;
 info.output.niftis = 'output';
-tract1 = 'CST_L';
-tract2 = 'SLF_L';
+tract1_L = 'CST_L';
+tract2_L = 'SLF_L';
+tract1_R = 'CST_R';
+tract2_R = 'SLF_R';
 
-disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST_L and SLF_L')
+disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST and SLF')
 mkdir('output');
-other_tracts = {'ARC_L','Thal_Rad_L'};
-Gen_niftis_crossing_tracts(info, tract1, tract2, other_tracts)
+other_tracts_L = {'ARC_L','Thal_Rad_L'};
+Gen_niftis_crossing_tracts(info, tract1_L, tract2_L, other_tracts_L)
+other_tracts_R = {'ARC_R','Thal_Rad_R'};
+Gen_niftis_crossing_tracts(info, tract1_R, tract2_R, other_tracts_R)
 
-disp('step 2 - Use VITASOFT to compute FA on predictions')
+disp('step 2 - Use VITASOFT to compute FA, MD, RD, AD on predictions')
 listing = dir(strcat('output/*.nii.gz'));
 Nfiles = size(listing,1);
 bs.n = 500;
@@ -47,6 +51,7 @@ bs.n = 500;
 bs.showProgress = false;
 ni = niftiRead(aligned_dwi);
 mkdir('output/FAs')
+mkdir('output/MDs')
 for n=1:Nfiles
     dwRawAligned = fullfile('output',listing(n).name);
     data_out_path = fullfile(info.output.niftis);
@@ -54,11 +59,20 @@ for n=1:Nfiles
     dt = dtiLoadDt6(dt6FileName);
     val_dt6 = dt.dt6;
     [nil, eigVal] = dtiSplitTensor(val_dt6);
-    val1 = dtiComputeFA(eigVal);
+    
 
     %% Generate nifti with FA values
+    val1 = dtiComputeFA(eigVal);
     name = fullfile('output/FAs',strcat('FA_',listing(n).name));
+    ni_out = ni;
+    ni_out.fname = name;
+    ni_out.dim = size(val1);
+    ni_out.data = val1;
+    niftiWrite(ni_out,name);
     
+    %% Generate nifti with MD values
+    val1 = dtiComputeMeanDiffusivity(eigVal);
+    name = fullfile('output/MDs',strcat('MD_',listing(n).name));
     ni_out = ni;
     ni_out.fname = name;
     ni_out.dim = size(val1);
@@ -68,6 +82,7 @@ end
 
 disp('3- Compute and plot profiles');
 mkdir('results');
-Gen_tract_profiles_pair(info, tract1, tract2, 10)
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10)
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10)
 
 end
