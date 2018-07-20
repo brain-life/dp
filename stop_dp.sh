@@ -9,11 +9,6 @@ if hash qdel 2>/dev/null; then
     qdel `cat jobid.fit`
     qdel `cat jobid.best`
 
-    #qdel somehow fails to stop jobs... 
-    sleep 3
-    qdel `cat jobid.fit`
-    qdel `cat jobid.best`
-    sleep 3
-    qdel `cat jobid.fit`
-    qdel `cat jobid.best`
+    #might take a while for all jobs to be terminated
+
 fi
