@@ -62,27 +62,52 @@ for n=1:Nfiles
     
 
     %% Generate nifti with FA values
-    val1 = dtiComputeFA(eigVal);
+    [fa_val, md_val, rd_val, ad_val] = dtiComputeFA(eigVal);
     name = fullfile('output/FAs',strcat('FA_',listing(n).name));
     ni_out = ni;
     ni_out.fname = name;
-    ni_out.dim = size(val1);
-    ni_out.data = val1;
+    ni_out.dim = size(fa_val);
+    ni_out.data = fa_val;
     niftiWrite(ni_out,name);
     
     %% Generate nifti with MD values
-    val1 = dtiComputeMeanDiffusivity(eigVal);
     name = fullfile('output/MDs',strcat('MD_',listing(n).name));
     ni_out = ni;
     ni_out.fname = name;
-    ni_out.dim = size(val1);
-    ni_out.data = val1;
+    ni_out.dim = size(md_val);
+    ni_out.data = md_val;
     niftiWrite(ni_out,name);
+    
+    %% Generate nifti with RD values
+    name = fullfile('output/RDs',strcat('RD_',listing(n).name));
+    ni_out = ni;
+    ni_out.fname = name;
+    ni_out.dim = size(rd_val);
+    ni_out.data = rd_val;
+    niftiWrite(ni_out,name);
+    
+    %% Generate nifti with AD values
+    name = fullfile('output/ADs',strcat('AD_',listing(n).name));
+    ni_out = ni;
+    ni_out.fname = name;
+    ni_out.dim = size(ad_val);
+    ni_out.data = ad_val;
+    niftiWrite(ni_out,name);    
 end
 
 disp('3- Compute and plot profiles');
 mkdir('results');
-Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10)
-Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10)
+% FA
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'FA')
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'FA')
+% MD
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'MD')
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'MD')
+% RD
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'RD')
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'RD')
+% AD
+Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'AD')
+Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'AD')
 
 end
