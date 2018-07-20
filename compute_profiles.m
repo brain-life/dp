@@ -7,8 +7,9 @@ if ~isdeployed
     addpath(genpath('/home/hayashis/git/mba'))
     addpath(genpath('/home/hayashis/git/jsonlab'));
 
-    %needed for cesar
-    addpath(genpath('/N/dc2/projects/lifebid/code/mba/'))
+    addpath(genpath('/N/u/brlife/git/vistasoft'));
+    addpath(genpath('/N/dc2/projects/lifebid/code/mba/')) %needed for cesar
+    addpath(genpath('/N/u/brlife/git/jsonlab'));
 end
 
 %following is needed to tell mcc compiler that we need to include sptensor even though we
