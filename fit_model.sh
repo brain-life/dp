@@ -28,13 +28,10 @@ fi
 echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
 #time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
 #export MAXMEM=16000000
-MAXMEM=16000000 singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2
-ret=$?
-if [ ! $ret -eq 0 ]; then
-	echo "job failed.. terminating other jobs"
-	./stop.sh
-	exit $ret
-fi
-
-echo "finished! now sleeping for a while to make sure parpool does get clean up"
-sleep 20
+for i in $(seq 1 5); 
+do 
+	echo "try $i"
+	MAXMEM=16000000 singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2 && break
+	echo "failed.. may retry"
+	sleep 15
+done
