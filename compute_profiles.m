@@ -53,6 +53,8 @@ bs.showProgress = false;
 ni = niftiRead(aligned_dwi);
 mkdir('output/FAs')
 mkdir('output/MDs')
+mkdir('output/RDs')
+mkdir('output/ADs')
 for n=1:Nfiles
     dwRawAligned = fullfile('output',listing(n).name);
     data_out_path = fullfile(info.output.niftis);
