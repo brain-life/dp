@@ -1,4 +1,31 @@
 /home/hayashis/git/encode
+commit c979e664d897ff72abb62397410b472bfdea8e67
+Author: Cesar Caiafa <ccaiafa@gmail.com>
+Date:   Mon Nov 27 18:12:27 2017 -0500
+
+    Update README.md
 /home/hayashis/git/vistasoft
+commit b882e0bf485574a215b31a3f0965bda30db75d84
+Merge: fcd98fa acfd3ee
+Author: Franco Pestilli <frakkopesto@gmail.com>
+Date:   Fri May 18 13:56:20 2018 -0400
+
+    Merge pull request #291 from bacaron/patch-2
+    
+    Update dtiImportFibersMrtrix.m
 /home/hayashis/git/mba 
+commit 20f2d2bf19bda5ff6faaf9d783314f612e1f1021
+Merge: eadde9e 67e3b63
+Author: francopestilli <frakkopesto@gmail.com>
+Date:   Fri Jan 13 17:07:45 2017 -0500
+
+    Merge branch 'master' of https://github.com/francopestilli/mba
 /home/hayashis/git/jsonlab
+commit 474d8c824800b5f2109c08f989085cb961acdbe3
+Merge: ae7a5d9 38b24fb
+Author: Qianqian Fang <fangqq@gmail.com>
+Date:   Wed Sep 6 13:01:57 2017 -0400
+
+    Merge pull request #41 from dasantonym/master
+    
+    added package.json to be able to intall via npm package manager
