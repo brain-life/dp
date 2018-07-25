@@ -1,4 +1,4 @@
-function [] = fit_model(alpha_v, alpha_f, lambda_1, lambda_2)
+function [] = fit_model(alpha_v, alpha_f, lambda_1, lambda_2, outpath)
 
 if isdeployed
     %command line arguments are passed in as string
@@ -56,8 +56,8 @@ disp([ 'alpha_v=', num2str(alpha_v), ...
 	config.afq);
 
 %save results
-fileName = fullfile('results', strcat('alpha_v_',num2str(alpha_v),'_alpha_f_',num2str(0), '_lambda_1_',num2str(lambda_1),'_lambda_2_',num2str(lambda_2),'.mat'));
-save(fileName, 'results')
+%fileName = fullfile('results', strcat('alpha_v_',num2str(alpha_v),'_alpha_f_',num2str(0), '_lambda_1_',num2str(lambda_1),'_lambda_2_',num2str(lambda_2),'.mat'));
+save(outpath, 'results')
 
 delete(pool);
 

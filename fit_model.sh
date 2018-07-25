@@ -20,18 +20,17 @@ lambda_2=$(echo $params | cut -f4 -d" ")
 
 echo "TASK_ID=$TASK_ID running fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2)"
 
-if [ -f "results/alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat" ]; then
+outpath="results/alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
+if [ -f $outpath ]; then
     echo "output file already exist.. skipping"
     exit 0
 fi
 
-echo "generating alpha_v_${alpha_v}_alpha_f_${alpha_f}_lambda_1_${lambda_1}_lambda_2_${lambda_2}.mat"
-#time matlab -nodisplay -nosplash -r "fit_model($alpha_v, $alpha_f, $lambda_1, $lambda_2); exit"
-#export MAXMEM=16000000
+echo "generating $outpath"
 for i in $(seq 1 5); 
 do 
 	echo "try $i"
-	MAXMEM=16000000 singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2 && break
+	MAXMEM=16000000 singularity exec docker://brainlife/mcr:neurodebian1604-r2017a ./compiled/fit_model $alpha_v $alpha_f $lambda_1 $lambda_2 $outpath && break
 	echo "failed.. may retry"
 	sleep 15
 done
