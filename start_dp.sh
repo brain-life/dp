@@ -69,6 +69,6 @@ if hash qsub 2>/dev/null; then
     echo $fit > jobid.fit
 
     echo "submitting find_best"
-    best=$(qsub -d $PWD -W depend=afterokarray:$fit -l nodes=1:ppn=4,vmem=32g,walltime=03:00:00 -o logs/best.log -e logs/best.err find_best.sh)
+    best=$(qsub -d $PWD -W depend=afterokarray:$fit -l nodes=1:ppn=8,vmem=32g,walltime=03:00:00 -o logs/best.log -e logs/best.err find_best.sh)
     echo $best > jobid.best
 fi
