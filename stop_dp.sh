@@ -6,9 +6,10 @@ if hash scancel 2>/dev/null; then
 fi
 
 if hash qdel 2>/dev/null; then
-    qdel `cat jobid.fit`
+    qdel `cat jobid.fit` #note.. might take a while for all jobs to be terminated
     qdel `cat jobid.best`
 
-    #might take a while for all jobs to be terminated
-
+    #best job gets stuck on H state ... I need to run it again.. why!?
+    sleep 10
+    qdel `cat jobid.best`
 fi
