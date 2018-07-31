@@ -197,7 +197,7 @@ profiles_data.tract2_orig = Meas_tract2_orig;
 profiles_data.tract1_pred = Meas_tract1_pred;
 profiles_data.tract2_pred = Meas_tract2_pred;
 
-save(strcat('./results/',measure,'_profiles_data.mat'), 'profiles_data')
+save(strcat('./results/',measure,'_profiles_data',strcat('_tract_name1','_tract_name2'),'.mat'), 'profiles_data')
 end
 
 function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross)
