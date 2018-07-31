@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 rm -f jobid.fit
 rm -f jobid.best
 rm -f failed
@@ -70,6 +72,6 @@ if hash qsub 2>/dev/null; then
 
     echo "submitting find_best"
     #best=$(qsub -d $PWD -W depend=afterokarray:$fit -l nodes=1:ppn=8,vmem=32g,walltime=03:00:00 -o logs/best.log -e logs/best.err find_best.sh)
-    best=$(qsub -d $PWD -W depend=afterok:$fit -l nodes=1:ppn=8,vmem=32g,walltime=03:00:00 -o logs/best.log -e logs/best.err find_best.sh)
+    best=$(qsub -d $PWD -W depend=afterok:$fit -l nodes=1:ppn=8,vmem=80g,walltime=03:00:00 -o logs/best.log -e logs/best.err find_best.sh)
     echo $best > jobid.best
 fi
