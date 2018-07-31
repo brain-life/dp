@@ -100,16 +100,21 @@ end
 
 disp('3- Compute and plot profiles');
 mkdir('results');
+mkdir('results/figures')
 % FA
+mkdir('results/figures/FA')
 Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'FA')
 Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'FA')
 % MD
+mkdir('results/figures/MD')
 Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'MD')
 Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'MD')
 % RD
+mkdir('results/figures/RD')
 Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'RD')
 Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'RD')
 % AD
+mkdir('results/figures/AD')
 Gen_tract_profiles_pair(info, tract1_L, tract2_L, 10, 'AD')
 Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'AD')
 
