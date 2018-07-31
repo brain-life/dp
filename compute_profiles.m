@@ -37,12 +37,17 @@ tract2_L = 'SLF_L';
 tract1_R = 'CST_R';
 tract2_R = 'SLF_R';
 
-disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST and SLF')
+disp('step 1 - Generate nifti with prdiction of signal given the pair of tracts CST/SLF and all other single tracts')
 mkdir('output');
+% Generate predictions for crossing tracts (CST/SLF)
 other_tracts_L = {'ARC_L','Thal_Rad_L'};
 Gen_niftis_crossing_tracts(info, tract1_L, tract2_L, other_tracts_L)
 other_tracts_R = {'ARC_R','Thal_Rad_R'};
 Gen_niftis_crossing_tracts(info, tract1_R, tract2_R, other_tracts_R)
+% Generate predictions for single tracts
+Gen_niftis_single_tracts(info, tract1_L, tract2_L)
+Gen_niftis_single_tracts(info, tract1_R, tract2_R)
+
 
 disp('step 2 - Use VITASOFT to compute FA, MD, RD, AD on predictions')
 listing = dir(strcat('output/*.nii.gz'));
