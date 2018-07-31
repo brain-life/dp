@@ -5,9 +5,14 @@
 #return code 2 = failed
 #return code 3 = unknown (retry later)
 
-if [ ! -f jobid.best ];then
+if [ ! -f jobid.best ]; then
 	echo "no jobid.best - not yet submitted?"
 	exit 3
+fi
+
+if [ -f info.mat ]; then
+	echo "dp finished"
+	exit 1
 fi
 
 jobid_fit=`cat jobid.fit`
@@ -55,16 +60,16 @@ if [ $failed_count != "0" ]; then
 fi
  
 #did it finish?
-hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "COMPLETED" > /dev/null
-if [ $? -eq 0 ]; then
-    echo "finished!"
-    exit 1
-fi
-hash qstat 2>/dev/null && qstat -f $jobid_best | grep "exit_status = 0" > /dev/null
-if [ $? -eq 0 ]; then
-    echo "finished!"
-    exit 1
-fi
+#hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "COMPLETED" > /dev/null
+#if [ $? -eq 0 ]; then
+#    echo "finished!"
+#    exit 1
+#fi
+#hash qstat 2>/dev/null && qstat -f $jobid_best | grep "exit_status = 0" > /dev/null
+#if [ $? -eq 0 ]; then
+#    echo "finished!"
+#    exit 1
+#fi
 
 #was it canceled?
 hash scontrol 2>/dev/null && scontrol show job $jobid_best | grep "CANCELLED" > /dev/null
