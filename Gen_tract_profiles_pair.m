@@ -276,7 +276,12 @@ end
 set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
     'box','off','XTick', [0 round(Nnodes)/2 Nnodes], 'YTick', [0 0.2 0.4 0.6 0.8], 'FontSize', 12);
 xlim(gca,[1 Nnodes]);
-ylim(gca,[0 0.8]);
+if strcmp(measure,'FA')
+    ylim(gca,[0 0.8]);
+else
+    sup_lim = 1.1*max(nanmean(FA_tract1)); % set lim y axis as +10% of maximum value on profile for tract1
+    ylim(gca,[0 sup_lim]);
+end
 
 title_str = tract_name1;
 newStr = strrep(title_str,'_','-');
