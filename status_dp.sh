@@ -37,10 +37,10 @@ fi
 
 if hash qstat 2>/dev/null; then
     qstat -f -t $jobid_fit | grep job_state > jobstate
-    if [ ! $? -eq 0 ]; then
-        echo "job removed?"
-        exit 2
-    fi
+    #if [ ! $? -eq 0 ]; then
+    #    echo "job removed?"
+    #    exit 2
+    #fi
     qstat -f $jobid_best | grep job_state >> jobstate
     running_count=$(grep "job_state = R" jobstate | wc -l)
     qstat -f -t $jobid_fit | grep exit_status | grep -v " 0" > failed
@@ -48,6 +48,7 @@ if hash qstat 2>/dev/null; then
     failed_count=$(cat failed | wc -l)
 fi
 completed_count=$(ls results/*.mat 2>/dev/null | wc -l || true)
+params=$(wc -l params.list)
 
 #did it fail?
 if [ $failed_count != "0" ]; then
@@ -97,7 +98,6 @@ fi
 
 #is fit/best running?
 if [ ! "$running_count" -eq "0" ]; then
-    params=$(wc -l params.list)
     echo "fitting .. $params running:$running_count completed:$completed_count"
     exit 0
 fi
