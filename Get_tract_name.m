@@ -41,6 +41,6 @@ switch tract_number
     case 20
         tract_name = 'ARC_R';           
     otherwise
-      disp(['ERROR: ',tract_name, ' not found.'])
+      disp(['ERROR: ',tract_number, ' not found.'])
 end    
 end

@@ -94,13 +94,10 @@ tract_set   = 1:20; % AFQ has 20 tracts (this must be updated for using Dan segm
 tract_set = tract_set(tract_set~=tract_number_1 & tract_set~=tract_number_2);
 
 for i=1:length(tract_set)
-    tract_name = Get_tract_name(i);
+    tract_name = Get_tract_name(tract_set(i));
+    disp(tract_name)
     Gen_nifti_single_tract(fe,classification,tract_set(i),tract_name, dataOutputPath, ni, info)
 end
-
-%% Generate niftis for crossing tracts prediction
-Gen_nifti_crossing_tracts(fe,classification, tract_number_1, tract_number_2, other_tract_number, ...
-                            strcat(tract_name_1, '_', tract_name_2,'_new'), dataOutputPath, ni, info)
 
 end
 

@@ -197,7 +197,7 @@ profiles_data.tract2_orig = Meas_tract2_orig;
 profiles_data.tract1_pred = Meas_tract1_pred;
 profiles_data.tract2_pred = Meas_tract2_pred;
 
-save(strcat('./results/',measure,'_profiles_data',strcat('_tract_name1','_tract_name2'),'.mat'), 'profiles_data')
+save(strcat('./results/',measure,strcat('_',tract_name1,'_',tract_name2),'.mat'), 'profiles_data')
 end
 
 function [] = Gen_profile_plot(FA_tract1, clr1, FA_tract1_12, clr12, FA_tract1_orig, clrorig, tract_name1, tract_name2, s, Nnodes, Node_cross)
@@ -237,7 +237,7 @@ title_str = tract_name1;
 newStr = strrep(title_str,'_','-');
 title(newStr, 'FontSize', 14)
 xlabel('Nodes Along Tract', 'FontSize', 14);
-ylabel('FA Value', 'FontSize', 14);
+ylabel(strcat(measure,' Value'), 'FontSize', 14);
 hold off;
 
 end
@@ -274,10 +274,11 @@ end
 %plot([Node_cross Node_cross],[0,0.8],'-k','DisplayName','crossing')
 
 set(gca, 'tickdir','out', 'ticklen',[0.025 0.025], ...
-    'box','off','XTick', [0 round(Nnodes)/2 Nnodes], 'YTick', [0 0.2 0.4 0.6 0.8], 'FontSize', 12);
+    'box','off','XTick', [0 round(Nnodes)/2 Nnodes], 'FontSize', 12);
 xlim(gca,[1 Nnodes]);
 if strcmp(measure,'FA')
     ylim(gca,[0 0.8]);
+    yticks([0 0.2 0.4 0.6 0.8]);
 else
     sup_lim = 1.1*max(nanmean(FA_tract1)); % set lim y axis as +10% of maximum value on profile for tract1
     ylim(gca,[0 sup_lim]);
