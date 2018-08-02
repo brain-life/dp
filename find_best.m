@@ -1,14 +1,14 @@
 function [] = find_best()
 
 if ~isdeployed
-    %addpath(genpath('/home/hayashis/git/encode'));
-    addpath(genpath('./encode'));
 
     %for matlab2
+    addpath(genpath('/home/hayashis/git/encode-dp'));
     addpath(genpath('/home/hayashis/git/vistasoft'));
     addpath(genpath('/home/hayashis/git/jsonlab'));
 
     %for hpc
+    addpath(genpath('/N/u/brlife/git/encode-dp'));
     addpath(genpath('/N/u/brlife/git/vistasoft'));
     addpath(genpath('/N/u/brlife/git/jsonlab'));
 end

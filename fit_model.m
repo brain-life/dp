@@ -8,14 +8,14 @@ if isdeployed
     lambda_2 = str2num(lambda_2)
 else
     disp('loading paths')
-    %addpath(genpath('/home/hayashis/git/encode')); 
-    addpath(genpath('./encode')); 
 
     %for matlab2
+    addpath(genpath('/home/hayashis/git/encode-dp')); 
     addpath(genpath('/home/hayashis/git/vistasoft'));
     addpath(genpath('/home/hayashis/git/jsonlab'));
 
     %for hpc
+    addpath(genpath('/N/u/brlife/git/encode-dp'));
     addpath(genpath('/N/u/brlife/git/vistasoft'));
     addpath(genpath('/N/u/brlife/git/jsonlab'));
 end
