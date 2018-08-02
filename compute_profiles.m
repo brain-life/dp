@@ -125,11 +125,11 @@ Gen_tract_profiles_pair(info, tract1_R, tract2_R, 10, 'AD')
 
 %% Generate niftis for single tracts prediction
 tract_set   = 1:20; % AFQ has 20 tracts (this must be updated for using Dan segmentation)
-n1L = Get_tract_number(tract1_L);
-n2L = Get_tract_number(tract2_L);
-n1R = Get_tract_number(tract1_R);
-n2R = Get_tract_number(tract2_R);
-tract_set = tract_set(tract_set~=n1L & tract_set~=n2L & tract_set~=n1R & tract_set~=n2R);
+% n1L = Get_tract_number(tract1_L);
+% n2L = Get_tract_number(tract2_L);
+% n1R = Get_tract_number(tract1_R);
+% n2R = Get_tract_number(tract2_R);
+% tract_set = tract_set(tract_set~=n1L & tract_set~=n2L & tract_set~=n1R & tract_set~=n2R);
 
 for i=1:length(tract_set)
     tract_name = Get_tract_name(tract_set(i));
